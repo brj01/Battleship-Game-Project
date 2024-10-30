@@ -202,8 +202,8 @@ int main() {
     initializeGrid(player2.grid);
     player1.radarSweeps = 3;
     player2.radarSweeps = 3;
-    player1.smokeScreens = 3;  // Initialize smoke screens
-    player2.smokeScreens = 3;  // Initialize smoke screens
+    player1.smokeScreens = 3;  
+    player2.smokeScreens = 3; 
     player1.shipsSunk = 0;
     player2.shipsSunk = 0;
 
@@ -232,7 +232,7 @@ int main() {
                     placeShip(player->grid, row, col, size, orientation);
                     break; 
                 } else {
-                    printf("Invalid position. Try again.\n");
+                    printf("Invalid position.\n");
                 }
             }
         }
@@ -244,7 +244,7 @@ int main() {
         Player* opponent = players[1 - currentPlayerIndex];
 
         displayGridEasy(opponent->hits, opponent->grid);
-        printf("%s's turn. Available moves: Fire, Radar, Smoke, Artillery, Torpedo\n", currentPlayer->name);
+        printf("%s's turn. Fire, Radar, Smoke, Artillery, Torpedo\n", currentPlayer->name);
         
         char command[50];
         scanf(" %[^\n]", command); 
