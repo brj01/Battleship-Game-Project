@@ -218,3 +218,102 @@ bool artillery(Player* currentPlayer, const char *coordinates) {
     }
 }
 
+int main() {
+    Player player1, player2;
+    bool gameRunning = true;
+    int currentPlayerIndex;
+    Player* players[2];
+
+    printf("Enter name for Player 1: ");
+    scanf("%s", player1.name);
+    printf("Enter name for Player 2: ");
+    scanf("%s", player2.name);
+
+    initializeGrid(player1.grid);
+    initializeGrid(player2.grid);
+    player1.radarSweeps = 3;
+    player2.radarSweeps = 3;
+    player1.smokeScreens = 1; 
+    player2.smokeScreens = 1;
+    player1.shipsSunk = 0;
+    player2.shipsSunk = 0;
+
+    
+    currentPlayerIndex = rand() % 2;
+    players[0] = &player1;
+    players[1] = &player2;
+
+for (int i = 0; i < 2; i++) {
+        Player* player = players[i];
+        printf("%s, place your ships:\n", player->name);
+        
+        for (int size = 5; size > 1; size--) {
+            char orientation[10];
+            char coordinate[3];
+            while (true) {
+                displayGridHard(player->grid);
+                printf("Enter coordinate for a %d-cell ship (e.g., B3): ", size);
+                scanf("%s", coordinate);
+                printf("Vertical or horizontal? ");
+                scanf("%s", orientation);
+                int row = coordinate[1] - '1';
+                int col = coordinate[0] - 'A';
+
+                if (canPlaceShip(player->grid, row, col, size, orientation)) {
+                    placeShip(player->grid, row, col, size, orientation);
+                    break; 
+                } else {
+                    printf("Invalid position. Try again.\n");
+                }
+            }
+        }
+        printf("All ships placed for %s.\n", player->name);
+    }
+
+    while (gameRunning) {
+        Player* currentPlayer = players[currentPlayerIndex];
+        Player* opponent = players[1 - currentPlayerIndex];
+
+        displayGrid(opponent->hits, true); 
+        printf("%s's turn. Available moves: Fire, Radar, Smoke, Artillery, Torpedo\n", currentPlayer->name);
+
+        char command[50];
+        scanf(" %[^\n]", command); 
+
+        if (strcmp(command, "Fire") == 0) {
+            char coordinates[3];
+            printf("Enter coordinates (e.g., B3): ");
+            scanf("%s", coordinates);
+            fire(coordinates, opponent);
+        } else if (strcmp(command, "Radar") == 0) {
+            char coordinates[3];
+            printf("Enter coordinates for radar sweep: ");
+            scanf("%s", coordinates);
+            radarSweep(opponent, coordinates);
+        } else if (strcmp(command, "Smoke") == 0) {
+            char coordinates[3];
+            printf("Enter the top left coordinate of the 2x2 area: ");
+            scanf("%s", coordinates);
+            smoke(currentPlayer, coordinates);
+        } else if (strcmp(command, "Artillery") == 0) {
+            char coordinates[3];
+            printf("Enter the top left coordinate of the 2x2 area: ");
+            scanf("%s", coordinates);
+            artillery(opponent, coordinates);
+        } else if (strcmp(command, "Torpedo") == 0) {
+            int rowOrCol;
+            printf("Do you want to target a row (0) or a column (1)? ");
+            scanf("%d", &rowOrCol);
+            torpedo(opponent, rowOrCol);
+        }
+
+        if (opponent->shipsSunk >= MAX_SHIPS) {
+            printf("%s wins!\n", currentPlayer->name);
+            gameRunning = false;
+        }
+
+        currentPlayerIndex = 1 - currentPlayerIndex;
+    }
+
+    return 0;
+}
