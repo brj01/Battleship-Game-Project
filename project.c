@@ -237,6 +237,7 @@ int main() {
             }
         }
         printf("All ships placed for %s.\n", player->name);
+            clearscreen();
     }
 
     while (gameRunning) {
@@ -278,7 +279,8 @@ int main() {
             gameRunning = false;
         }
 
-        currentPlayerIndex = 1 - currentPlayerIndex; // Switch players
+        currentPlayerIndex = 1 - currentPlayerIndex;
+            clearscreen();
     }
 
     return 0;
