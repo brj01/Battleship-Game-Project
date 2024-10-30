@@ -3,133 +3,80 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define SIZE 10
+#define MAX_SHIPS 5
 
-bool smoke(int smokeCounter, bool smokeScreen[10][10]) {
-    if (smokeCounter <= 0) {
-        printf("you cant currently use this function\n");
-        return false; }
-    
-    char coordinate[3];
-
-    printf("enter the top left coordinate of the 2x2 area: ");
-    scanf("%s\n", *coordinate);
-
-    int row = atoi(coordinate + 1) - 1;
-    int col = coordinate[0] - 'A';
-
-    if (row + 1 < 10 && col + 1 < 10) {
-        smokeScreen[row][col] = true;
-        smokeScreen[row + 1][col] = true;
-        smokeScreen[row][col + 1] = true;
-        smokeScreen[row + 1][col + 1] = true;
-
-        return true; }
-    else {
-        printf("the coordinates of the 2x2 smoke screen are out of bounds");
-        return false; }
-}
+typedef struct {
+    char name[50];
+    bool grid[10][10];
+    bool hits[10][10];
+    int shipsSunk;
+    int radarSweeps;
+    int smokeScreens;
+} 
+Player;
 
 
-bool artillery(bool sankShipLastTurn, bool array [10][10]) {
-    if (!sankShipLastTurn) {
-        printf("you cant currently use this function\n");
-        return false; }
-    
-    char coordinate[3];
-
-    printf("enter the top left coordinate of the 2x2 area: ");
-    scanf("%s ", *coordinate);
-
-    int row = atoi(coordinate + 1) - 1;
-    int col = coordinate[0] - 'A';
-
-    
-    bool b1 = fire(array[row][col], array);
-
-    if(row + 1 < 10 && col + 1 < 10) {
-        bool b2 = fire(array[row + 1][col], array);
-        bool b3 = fire(array[row][col + 1], array);
-        bool b4 = fire(array[row + 1][col + 1]); 
-        
-        if (b1 | b2 | b3 | b4) {
-            return true; }
-
-    else return false; }    
-}
+void radarSweep(int counter, bool array[10][10], const char *coordinates) {
+    int column = coordinates[0] - 'A';
+    int row = atoi(coordinates + 1) - 1;
 
 
-bool torpedo(bool sankShipLastTurn, bool array [10][10], bool hit [10][10]) {
-    if(!sankShipLastTurn) {
-        printf("you havent unlocked this feature yet");
-        return false; }
-    
-    int rowOrCol; //0 for row, 1 for col
-    bool chosen[10]; //row or column chosen
-    printf("do you want a row or column? ");
-    scanf("%d\n");
+    if (counter <= 3) {
+        bool t1 = array[row][column];
 
-    if (rowOrCol == 0) {
-        int row;
-        printf("what row do you want to torpedo? ");
-        scanf("%d\n", row);
-
-        if(row >=0 && row < 10) {
-            for(int j = 0; j < 10; j++) {
-                chosen[j] = fire(array[row][j]);
-                hit[row][j] = true; }
-
-            for (int i = 0; i < chosen; i++) {
-                if (chosen[i]) return true;
-                else continue; }
-            return false;
+       
+        if (row + 1 < 10 && column + 1 < 10 ) {
+            bool t2 = array[row + 1][column + 1]  ;
+            bool t3 = array[row][column + 1];
+            bool t4 = array[row + 1][column]; 
         }
-        else printf("row out of bound and not on grid");
-        return false;
     }
-    else {
-        char column[2];
-        printf("what column do you want to torpedo? ");
-        scanf("%s\n", *column);
-
-        int col = column[0] - 'A';
-
-        if(col >=0 && col < 10) {
-            for(int i = 0; i < 10; i++) {
-                chosen[i] = fire(array[i][col]); 
-                hit[i][col] = true; }
-
-            for (int i = 0; i < chosen; i++) {
-                if (chosen[i]) return true;
-                else continue; }
-            return false;
+}
+void fire(const char *coordinates, bool array[10][10]) {
+    int column = coordinates[0] - 'A'; 
+    int row = atoi(coordinates + 1) - 1; 
+    if (row >= 0 && row < 10 && column >= 0 && column < 10) {
+        if (array[row][column]) {
+            printf("hit\n");
+        } else {
+            printf("miss\n");
         }
-        else printf("column out of bound and not on grid");
-        return false;
+    } else {
+        printf("Invalid coordinates\n");
+    }
+}
+void initializeGrid(bool grid[10][10]) {
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            grid[i][j] = false; 
+        }
     }
 }
 
-// Display grid for hard mode (only hits are shown)
-void displaygridhard(bool grid[10][10]) {
+void displayGridHard(bool grid[10][10]) {
     printf("  A B C D E F G H I J\n");
     for (int i = 0; i < 10; i++) {
         printf("%d ", i);
         for (int j = 0; j < 10; j++) {
-            if (grid[i][j]) printf("~ ");
-            else printf("X ");
+            printf("%c ", grid[i][j] ? '~' : 'X');
         }
         printf("\n");
     }
 }
 
 // Display grid for easy mode (hits and misses are shown)
-void displaygrideasy(bool gridhits[10][10], bool shipslocation[10][10]) {
+void displayGridEasy(bool gridHits[10][10], bool shipsLocation[10][10]) {
     printf("  A B C D E F G H I J\n");
     for (int i = 0; i < 10; i++) {
         printf("%d ", i);
         for (int j = 0; j < 10; j++) {
-            if (gridhits[i][j]) printf("~ ");
-            else if (shipslocation[i][j]) printf("M ");
-            else printf("X ");
+            if (gridHits[i][j]) 
+                printf("~ ");
+            else if (shipsLocation[i][j]) 
+                printf("M ");
+            else 
+                printf("X ");
         }
         printf("\n");
     }
@@ -164,47 +111,110 @@ void placeShip(bool grid[10][10], int row, int col, int size, const char* orient
     }
 }
 
-// Function to add ships to the grid
-void addships(bool grid[10][10]) {
-    char read[3];
-    char orientation[10];
-    int coordinate2;
-    char coordinate;
+// Clears the screen (simulate by printing newlines)
+void clearScreen() {
+    for (int i = 0; i < 30; i++) printf("\n");
+}
+
+void fire(const char *coordinates, bool array[10][10]) {
+    int column = coordinates[0] - 'A'; 
+    int row = atoi(coordinates + 1) - 1; 
+    if (row >= 0 && row < 10 && column >= 0 && column < 10) {
+        if (array[row][column]) {
+            printf("Hit\n");
+            array[row][column] = false; // Mark hit for the opponent
+        } else {
+            printf("Miss\n");
+        }
+    } else {
+        printf("Invalid coordinates\n");
+    }
+}
+
+void radarSweep(Player* currentPlayer, const char *coordinates) {
+    int column = coordinates[0] - 'A';
+    int row = atoi(coordinates + 1) - 1;
+
+    if (currentPlayer->radarSweeps > 0) {
+        currentPlayer->radarSweeps--;
+        printf("Radar Sweep at %s: %s\n", coordinates, currentPlayer->grid[row][column] ? "Ship detected!" : "No ship detected.");
+    } else {
+        printf("No radar sweeps left.\n");
+    }
+}
+
+bool smoke(Player* currentPlayer, const char *coordinates) {
+    if (currentPlayer->smokeScreens <= 0) {
+        printf("You can't currently use this function\n");
+        return false; 
+    }
     
-    for (int i = 5; i > 1; i--) {  // Ship sizes from 5 down to 2
-        while (1) {  // Loop until a valid position is entered
-            printf("Enter coordinate of %d-cell ship (e.g., B3): ", i);
-            scanf("%s", read);
-            coordinate = read[0];
-            coordinate2 = atoi(&read[1]) - 1;  // Convert to zero-based index
+    int row = atoi(coordinates + 1) - 1;
+    int col = coordinates[0] - 'A';
 
-            printf("Vertical or horizontal? ");
-            scanf("%s", orientation);
+    if (row + 1 < 10 && col + 1 < 10) {
+        currentPlayer->smokeScreens--;
+        printf("Smoke screen deployed at %s\n", coordinates);
+        return true;
+    } else {
+        printf("The coordinates of the 2x2 smoke screen are out of bounds\n");
+        return false; 
+    }
+}
 
-            // Check if placement is possible
-            if (canPlaceShip(grid, coordinate2, coordinate - 'A', i, orientation)) {
-                placeShip(grid, coordinate2, coordinate - 'A', i, orientation);
-                displaygridhard(grid);  // Show the grid for confirmation after each ship
-                break;  // Exit loop for current ship size
-            } else {
-                printf("Does not fit or overlaps with another ship. Choose another coordinate.\n");
+bool torpedo(Player* currentPlayer, bool array[10][10], bool hit[10][10]) {
+    int rowOrCol;
+    printf("Do you want a row (0) or column (1)? ");
+    scanf("%d", &rowOrCol);
+
+    if (rowOrCol == 0) {
+        int row;
+        printf("What row do you want to torpedo? ");
+        scanf("%d", &row);
+
+        if (row >= 0 && row < 10) {
+            for (int j = 0; j < 10; j++) {
+                fire(array[row][j]);
+                hit[row][j] = true; 
             }
+            return true;
+        } else {
+            printf("Row out of bounds\n");
+            return false;
+        }
+    } else {
+        char column[2];
+        printf("What column do you want to torpedo? ");
+        scanf("%s", column);
+
+        int col = column[0] - 'A';
+
+        if (col >= 0 && col < 10) {
+            for (int i = 0; i < 10; i++) {
+                fire(array[i][col]);
+                hit[i][col] = true; 
+            }
+            return true;
+        } else {
+            printf("Column out of bounds\n");
+            return false;
         }
     }
 }
 
-// Clears the screen (simulate by printing newlines)
-void clearscreen() {
-    for (int i = 0; i < 30; i++) printf("\n");
+bool artillery(Player* currentPlayer, const char *coordinates) {
+    int row = atoi(coordinates + 1) - 1;
+    int col = coordinates[0] - 'A';
+
+    if (row + 1 < 10 && col + 1 < 10) {
+        fire(array, array[row][col]);
+        fire(array, array[row + 1][col]);
+        fire(array, array[row][col + 1]);
+        fire(array, array[row + 1][col + 1]);
+        return true;
+    } else {
+        printf("Coordinates are out of bounds\n");
+        return false; 
+    }
 }
 
-int main() {
-    bool grid1[10][10] = {false};
-    bool gridhits[10][10] = {false};
-    bool shipslocation[10][10] = {false};
-
-    addships(grid1);  // Test ship placement
-    displaygridhard(grid1);  // Final display for confirmation
-    
-    return 0;
-}
