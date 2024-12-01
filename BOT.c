@@ -137,8 +137,8 @@ bool checkShipSunk(bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], int row, int co
 
 void artillery(Player *opponent, int centerRow, int centerCol) {
     printf("Artillery strike at %c%d:\n", 'A' + centerCol, centerRow + 1);
-    for (int i = centerRow - 1; i <= centerRow + 1; i++) {
-        for (int j = centerCol - 1; j <= centerCol + 1; j++) {
+    for (int i = centerRow ; i <= centerRow + 1; i++) {
+        for (int j = centerCol ; j <= centerCol + 1; j++) {
             if (i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
                 opponent->hits[i][j] = true;
                 opponent->grid[i][j] = false;
@@ -168,8 +168,8 @@ void torpedo(Player *opponent, char *direction, int index) {
 // Radar Sweep: Detect ships in a 3x3 area
 void radarSweep(Player *opponent, int centerRow, int centerCol) {
     printf("Radar sweep at %c%d:\n", 'A' + centerCol, centerRow + 1);
-    for (int i = centerRow - 1; i <= centerRow + 1; i++) {
-        for (int j = centerCol - 1; j <= centerCol + 1; j++) {
+    for (int i = centerRow ; i <= centerRow + 1; i++) {
+        for (int j = centerCol ; j <= centerCol + 1; j++) {
             if (i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
                 if (opponent->grid[i][j]) {
                     printf("Ship detected at %c%d\n", 'A' + j, i + 1);
