@@ -52,14 +52,14 @@ void displayGridEasy(bool gridHits[SIZE][SIZE], bool shipsLocation[SIZE][SIZE]) 
 
 bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, const char *orientation) {
     if (strcmp(orientation, "vertical") == 0) {
-        if (row + size > SIZE) return false; // Check if ship fits in the grid
+        if (row + size > SIZE) return false; // Ship goes out of bounds vertically
         for (int i = 0; i < size; i++) {
-            if (grid[row + i][col]) return false; // Ensure no conflict with existing ships
+            if (grid[row + i][col]) return false; // Conflicts with existing ship
         }
     } else if (strcmp(orientation, "horizontal") == 0) {
-        if (col + size > SIZE) return false; // Check if ship fits in the grid
+        if (col + size > SIZE) return false; // Ship goes out of bounds horizontally
         for (int i = 0; i < size; i++) {
-            if (grid[row][col + i]) return false; // Ensure no conflict with existing ships
+            if (grid[row][col + i]) return false; // Conflicts with existing ship
         }
     } else {
         return false; // Invalid orientation
@@ -160,11 +160,21 @@ int main() {
                 displayGridHard(player->grid);
                 printf("Enter coordinate for a %d-cell ship (e.g., B3): ", size);
                 scanf("%3s", coordinate); // Limit to 3 characters
-                printf("Vertical or horizontal? ");
-                scanf("%9s", orientation); // Limit to 9 characters
 
                 int row = atoi(coordinate + 1) - 1;
                 int col = coordinate[0] - 'A';
+
+                // Debug: Print parsed row and column
+                printf("Parsed row: %d, col: %d\n", row, col);
+
+                printf("Vertical or horizontal? ");
+                scanf("%9s", orientation); // Limit to 9 characters
+
+                // Validate orientation
+                if (strcmp(orientation, "vertical") != 0 && strcmp(orientation, "horizontal") != 0) {
+                    printf("Invalid orientation. Use 'vertical' or 'horizontal'.\n");
+                    continue;
+                }
 
                 if (row >= 0 && row < SIZE && col >= 0 && col < SIZE &&
                     canPlaceShip(player->grid, row, col, size, orientation)) {
