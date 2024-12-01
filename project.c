@@ -115,6 +115,89 @@ bool fire(const char *coordinates, bool grid[SIZE][SIZE], bool hits[SIZE][SIZE],
     }
 }
 
+// Torpedo: Targets an entire row or column
+void torpedo(Player *opponent, char *result) {
+    char type[10];
+    printf("Do you want to target a row or column? (row/column): ");
+    scanf("%9s", type);
+
+    if (strcmp(type, "row") == 0) {
+        int row;
+        printf("Enter the row number (1-10): ");
+        scanf("%d", &row);
+        row -= 1;
+
+        if (row < 0 || row >= SIZE) {
+            strcpy(result, "Invalid row number.");
+            return;
+        }
+
+        for (int col = 0; col < SIZE; col++) {
+            if (opponent->grid[row][col]) {
+                opponent->hits[row][col] = true;
+                opponent->grid[row][col] = false;
+            }
+        }
+        strcpy(result, "Torpedo fired at row!");
+    } else if (strcmp(type, "column") == 0) {
+        char colChar;
+        printf("Enter the column letter (A-J): ");
+        scanf(" %c", &colChar);
+        int col = toupper(colChar) - 'A';
+
+        if (col < 0 || col >= SIZE) {
+            strcpy(result, "Invalid column letter.");
+            return;
+        }
+
+        for (int row = 0; row < SIZE; row++) {
+            if (opponent->grid[row][col]) {
+                opponent->hits[row][col] = true;
+                opponent->grid[row][col] = false;
+            }
+        }
+        strcpy(result, "Torpedo fired at column!");
+    } else {
+        strcpy(result, "Invalid choice. Use 'row' or 'column'.");
+    }
+}
+
+// Radar Sweep
+void radarSweep(Player *opponent, const char *coordinates, char *result) {
+    int row, col;
+    if (!parseCoordinates(coordinates, &row, &col)) {
+        strcpy(result, "Invalid coordinates for radar sweep.");
+        return;
+    }
+
+    sprintf(result, "Radar sweep at %c%d: %s", 'A' + col, row + 1,
+            opponent->grid[row][col] ? "Ship detected!" : "No ship detected.");
+}
+
+// Smoke Screen
+void smokeScreen(Player *player, const char *coordinates, char *result) {
+    int row, col;
+    if (!parseCoordinates(coordinates, &row, &col)) {
+        strcpy(result, "Invalid coordinates for smoke screen.");
+        return;
+    }
+
+    sprintf(result, "Smoke screen deployed at %c%d. Area obscured.", 'A' + col, row + 1);
+}
+
+// Check if a ship is sunk
+bool isShipSunk(bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], int row, int col, int size, bool isVertical) {
+    for (int i = 0; i < size; i++) {
+        int r = isVertical ? row + i : row;
+        int c = isVertical ? col : col + i;
+
+        if (!hits[r][c]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Main Function
 int main() {
     Player player1, player2;
@@ -173,7 +256,7 @@ int main() {
         Player *opponent = players[1 - currentPlayerIndex];
 
         displayGrid(opponent->hits, "Opponent's Grid", true);
-        printf("%s's turn. Choose an action (Fire): ", currentPlayer->name);
+        printf("%s's turn. Choose an action (Fire, Torpedo, Radar, Smoke): ", currentPlayer->name);
 
         char command[50];
         scanf("%s", command);
@@ -185,6 +268,22 @@ int main() {
 
             char result[20];
             fire(coordinates, opponent->grid, opponent->hits, result);
+            printf("%s\n", result);
+        } else if (strcmp(command, "Torpedo") == 0) {
+            char result[50];
+            torpedo(opponent, result);
+            printf("%s\n", result);
+        } else if (strcmp(command, "Radar") == 0) {
+            char coordinates[4], result[50];
+            printf("Enter coordinates for radar sweep: ");
+            scanf("%3s", coordinates);
+            radarSweep(opponent, coordinates, result);
+            printf("%s\n", result);
+        } else if (strcmp(command, "Smoke") == 0) {
+            char coordinates[4], result[50];
+            printf("Enter coordinates for smoke screen: ");
+            scanf("%3s", coordinates);
+            smokeScreen(currentPlayer, coordinates, result);
             printf("%s\n", result);
         } else {
             printf("Unknown command. Try again.\n");
