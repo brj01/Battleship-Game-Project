@@ -207,6 +207,14 @@ int main() {
     Player *players[2] = {&player1, &player2};
     int currentPlayerIndex = 0;
 
+    printf("Do you want to display missiles? (Y/N) ");
+    char wantMissiles;
+    bool showMissiles = false;
+    scanf("%49s", wantMissiles);
+
+    if (wantMissiles == 'Y' || wantMissiles == 'y') {
+        showMissiles = true; }
+
     printf("Enter name for Player 1: ");
     scanf("%49s", player1.name);
     printf("Enter name for Player 2: ");
@@ -232,7 +240,7 @@ int main() {
             char coordinate[4];
             char orientation[10];
             while (true) {
-                displayGrid(player->grid, "Your Ships", false);
+                displayGrid(player->grid, "Your Ships", showMissiles);
                 printf("Enter coordinate for your %s (size %d): ", shipNames[j], shipSizes[j]);
                 scanf("%3s", coordinate);
 
