@@ -12,15 +12,13 @@ typedef struct {
     bool grid[SIZE][SIZE];
     bool hits[SIZE][SIZE];
     int shipsSunk;
-    int smokeScreens; // Tracks available smoke screens
-    bool smoke[SIZE][SIZE]; // Tracks smoke-covered areas
+    int smokeScreens; 
+    bool smoke[SIZE][SIZE]; 
 } Player;
 
-// Ship sizes and names
 const int shipSizes[] = {5, 4, 3, 3, 2};
 const char *shipNames[] = {"Carrier", "Battleship", "Destroyer 1", "Destroyer 2", "Submarine"};
 
-// Grid Initialization
 void initializeGrid(bool grid[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -29,7 +27,6 @@ void initializeGrid(bool grid[SIZE][SIZE]) {
     }
 }
 
-// Smoke Initialization
 void initializeSmoke(bool grid[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -38,7 +35,6 @@ void initializeSmoke(bool grid[SIZE][SIZE]) {
     }
 }
 
-// Display Grid
 void displayGrid(bool grid[SIZE][SIZE], const char *label, bool showMisses) {
     printf("\n%s:\n", label);
     printf("  A B C D E F G H I J\n");
@@ -54,7 +50,6 @@ void displayGrid(bool grid[SIZE][SIZE], const char *label, bool showMisses) {
     }
 }
 
-// Parse Coordinates
 bool parseCoordinates(const char *input, int *row, int *col) {
     if (strlen(input) < 2 || !isalpha(input[0]) || !isdigit(input[1])) {
         return false;
@@ -65,7 +60,6 @@ bool parseCoordinates(const char *input, int *row, int *col) {
     return (*row >= 0 && *row < SIZE && *col >= 0 && *col < SIZE);
 }
 
-// Radar Sweep
 void radarSweep(Player *opponent, const char *coordinates, char *result) {
     int row, col;
     if (!parseCoordinates(coordinates, &row, &col)) {
@@ -73,7 +67,6 @@ void radarSweep(Player *opponent, const char *coordinates, char *result) {
         return;
     }
 
-    // If the area is covered by smoke, no detection
     if (opponent->smoke[row][col]) {
         strcpy(result, "Radar sweep blocked by smoke.");
     } else {
@@ -82,7 +75,6 @@ void radarSweep(Player *opponent, const char *coordinates, char *result) {
     }
 }
 
-// Artillery Option
 void artillery(Player *opponent, const char *coordinates, char *result) {
     int row, col;
     if (!parseCoordinates(coordinates, &row, &col)) {
@@ -92,7 +84,6 @@ void artillery(Player *opponent, const char *coordinates, char *result) {
 
     int hits = 0;
 
-    // Artillery hits a 3x3 area
     for (int i = -1; i <= 1; i++) {
         for (int j = -1; j <= 1; j++) {
             int r = row + i;
@@ -109,7 +100,6 @@ void artillery(Player *opponent, const char *coordinates, char *result) {
     sprintf(result, "Artillery fired at %c%d: %d hits!", 'A' + col, row + 1, hits);
 }
 
-// Smoke Screen
 void smokeScreen(Player *player, const char *coordinates, char *result) {
     int row, col;
     if (!parseCoordinates(coordinates, &row, &col)) {
@@ -117,7 +107,6 @@ void smokeScreen(Player *player, const char *coordinates, char *result) {
         return;
     }
 
-    // Deploy smoke in a 3x3 area
     for (int i = -1; i <= 1; i++) {
         for (int j = -1; j <= 1; j++) {
             int r = row + i;
@@ -130,7 +119,6 @@ void smokeScreen(Player *player, const char *coordinates, char *result) {
     sprintf(result, "Smoke screen deployed at %c%d.", 'A' + col, row + 1);
 }
 
-// Main Function
 int main() {
     Player player1, player2;
     Player *players[2] = {&player1, &player2};
@@ -149,15 +137,13 @@ int main() {
 
     player1.shipsSunk = player2.shipsSunk = 0;
 
-    // Ship placement (simplified for demo)
     printf("%s, place your ships:\n", player1.name);
     for (int i = 0; i < MAX_SHIPS; i++) {
-        int row = i; // Example placement
+        int row = i; 
         int col = i;
         placeShip(player1.grid, row, col, shipSizes[i], true);
     }
 
-    // Gameplay loop
     while (true) {
         Player *currentPlayer = players[currentPlayerIndex];
         Player *opponent = players[1 - currentPlayerIndex];
