@@ -94,43 +94,33 @@ void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertica
 bool checkShipSunk(bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], int row, int col) {
 
     if (!grid[row][col]) {
-        return false;
-    }
-
+        return false; }
    
     int startCol = col, endCol = col;
     while (startCol > 0 && grid[row][startCol - 1]) {
-        startCol--;
-    }
+        startCol--; }
     while (endCol < SIZE - 1 && grid[row][endCol + 1]) {
-        endCol++;
-    }
+        endCol++; }
 
     bool isHorizontalSunk = true;
     for (int c = startCol; c <= endCol; c++) {
         if (!hits[row][c]) {
             isHorizontalSunk = false;
-            break;
-        }
+            break; }
     }
-
 
     int startRow = row, endRow = row;
     while (startRow > 0 && grid[startRow - 1][col]) {
-        startRow--;
-    }
+        startRow--; }
     while (endRow < SIZE - 1 && grid[endRow + 1][col]) {
-        endRow++;
-    }
+        endRow++; }
 
     bool isVerticalSunk = true;
     for (int r = startRow; r <= endRow; r++) {
         if (!hits[r][col]) {
             isVerticalSunk = false;
-            break;
-        }
+            break; }
     }
-
 
     return isHorizontalSunk || isVerticalSunk;
 }
@@ -210,6 +200,23 @@ void botFire(Bot *bot, Player *opponent) {
     printf("Bot fires at %c%d: %s\n", 'A' + col, row + 1, result);
 }
 
+//for bot to automatically place its ships
+void botPlaceShips(Bot *bot) {
+    for (int i = 0; i < MAX_SHIPS; i++) {
+        bool placed = false;
+        while (!placed) {
+            int row = rand() % SIZE;
+            int col = rand() % SIZE;
+            bool isVertical = rand() % 2;
+
+            if (canPlaceShip(bot->grid, row, col, shipSizes[i], isVertical)) {
+                placeShip(bot->grid, row, col, shipSizes[i], isVertical);
+                placed = true; }
+        }
+    }
+}
+
+
 // Main function
 int main() {
     srand(time(NULL));
@@ -217,6 +224,14 @@ int main() {
     Player player;
     Bot bot;
     int currentPlayerIndex = 0;
+
+    printf("Do you want to display missiles? (Y/N) ");
+    char wantMissiles;
+    bool showMissiles = false;
+    scanf("%49s", wantMissiles);
+
+    if (wantMissiles == 'Y' || wantMissiles == 'y') {
+        showMissiles = true; }
 
     printf("Enter your name: ");
     scanf("%49s", player.name);
@@ -237,7 +252,7 @@ int main() {
         char coordinate[4];
         char orientation[10];
         while (true) {
-            displayGrid(player.grid, "Your Ships", false);
+            displayGrid(player.grid, "Your Ships", showMissiles);
             printf("Enter coordinate for your %s (size %d): ", shipNames[i], shipSizes[i]);
             scanf("%3s", coordinate);
 
@@ -275,7 +290,7 @@ int main() {
             char result[20];
             if (parseCoordinates(coordinates, &row, &col)) {
                 if (fire(&bot, row, col, result)) {
-                    if (checkShipSunk(&bot, row, col, shipSizes[i])) {
+                    if (checkShipSunk(bot.grid, bot.hits, row, col)) {
                         bot.shipsSunk++;
                         printf("You sunk the opponent's ship!\n");
                     }
@@ -287,7 +302,7 @@ int main() {
         } else { // Bot's turn
             botFire(&bot, &player);
             if (bot.lastHitSuccess) {
-                if (checkShipSunk(&player, bot.lastHitRow, bot.lastHitCol, shipSizes[i])) {
+                if (checkShipSunk(player.grid, player.hits, bot.lastHitRow, bot.lastHitCol)) {
                     player.shipsSunk++;
                     printf("The bot sunk one of your ships!\n");
                 }
