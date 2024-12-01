@@ -17,22 +17,7 @@ typedef struct {
 Player;
 
 
-void radarSweep(int counter, bool array[10][10], const char *coordinates) {
-    int column = coordinates[0] - 'A';
-    int row = atoi(coordinates + 1) - 1;
-
-
-    if (counter <= 3) {
-        bool t1 = array[row][column];
-
-       
-        if (row + 1 < 10 && column + 1 < 10 ) {
-            bool t2 = array[row + 1][column + 1]  ;
-            bool t3 = array[row][column + 1];
-            bool t4 = array[row + 1][column]; 
-        }
-    }
-}bool fire(const char *coordinates, bool array[10][10]) {
+bool fire(const char *coordinates, bool array[10][10]) {
     int column = coordinates[0] - 'A'; 
     int row = atoi(coordinates + 1) - 1; 
 
@@ -160,12 +145,19 @@ bool artillery(bool sankShipLastTurn, bool array [10][10]) {
     int col = coordinate[0] - 'A';
 
     
-    bool b1 = fire(array[row][col], array);
+    char coordinate[3];
+    snprintf(coordinate, sizeof(coordinate), "%c%d", 'A' + col, row + 1);
+    bool b1 = fire(coordinate, array);
 
     if(row + 1 < 10 && col + 1 < 10) {
-        bool b2 = fire(array[row + 1][col], array);
+        snprintf(coordinate, sizeof(coordinate), "%c%d", 'A' + col, (row + 1) + 1);
+        bool b2 = fire(coordinate, array);
+
+        snprintf(coordinate, sizeof(coordinate), "%c%d", 'A' + (col + 1), row + 1);
         bool b3 = fire(array[row][col + 1], array);
-        bool b4 = fire(array[row + 1][col + 1]); 
+
+        snprintf(coordinate, sizeof(coordinate), "%c%d", 'A' + (col + 1), (row + 1) + 1);
+        bool b4 = fire(array[row + 1][col + 1], array);
         
         if (b1 | b2 | b3 | b4) {
             return true; }
@@ -188,10 +180,10 @@ bool torpedo(bool sankShipLastTurn, bool array [10][10], bool hit [10][10]) {
         int row;
         printf("what row do you want to torpedo? ");
         scanf("%d\n", row);
-
+        char coordinate[3];
         if(row >=0 && row < 10) {
             for(int j = 0; j < 10; j++) {
-                chosen[j] = fire(array[row][j]);
+                chosen[j] = fire(array[row][j], array);
                 hit[row][j] = true; }
 
             for (int i = 0; i < chosen; i++) {
@@ -211,7 +203,7 @@ bool torpedo(bool sankShipLastTurn, bool array [10][10], bool hit [10][10]) {
 
         if(col >=0 && col < 10) {
             for(int i = 0; i < 10; i++) {
-                chosen[i] = fire(array[i][col]); 
+                chosen[i] = fire(array[i][col], array); 
                 hit[i][col] = true; }
 
             for (int i = 0; i < chosen; i++) {
@@ -221,7 +213,7 @@ bool torpedo(bool sankShipLastTurn, bool array [10][10], bool hit [10][10]) {
         }
     }
 
-int main() {
+int main();{
     Player player1, player2;
     bool gameRunning = true;
     int currentPlayerIndex;
