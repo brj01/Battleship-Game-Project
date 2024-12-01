@@ -146,3 +146,77 @@ bool Cantorpedo(Player* opponent) {
 }
 
 }
+void hardDifficultyFire(Bot *bot, Player *opponent) {
+    char coordinates[3];
+    bool success = false;
+
+    if (bot->radarSweeps > 0) {
+        int row = rand() % SIZE;
+        int col = rand() % SIZE;
+        sprintf(coordinates, "%c%d", 'A' + col, row + 1);
+        radarSweep(bot, coordinates);
+        printf("Bot uses radar at %s\n", coordinates);
+
+        if (opponent->grid[row][col]) {
+            printf("Ship detected at %s! Focusing fire.\n", coordinates);
+            fire(coordinates, opponent->grid);
+            success = true;
+        }
+    }
+
+
+    if (!success) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (opponent->hits[i][j]) {
+      
+                    if (i > 0 && !opponent->hits[i - 1][j] && opponent->grid[i - 1][j]) { // above
+                        sprintf(coordinates, "%c%d", 'A' + j, i);
+                        printf("Bot fires at %s\n", coordinates);
+                        fire(coordinates, opponent->grid);
+                        return;
+                    }
+                    if (i < SIZE - 1 && !opponent->hits[i + 1][j] && opponent->grid[i + 1][j]) { // below
+                        sprintf(coordinates, "%c%d", 'A' + j, i + 2);
+                        printf("Bot fires at %s\n", coordinates);
+                        fire(coordinates, opponent->grid);
+                        return;
+                    }
+                    if (j > 0 && !opponent->hits[i][j - 1] && opponent->grid[i][j - 1]) { // left
+                        sprintf(coordinates, "%c%d", 'A' + j - 1, i + 1);
+                        printf("Bot fires at %s\n", coordinates);
+                        fire(coordinates, opponent->grid);
+                        return;
+                    }
+                    if (j < SIZE - 1 && !opponent->hits[i][j + 1] && opponent->grid[i][j + 1]) { // right
+                        sprintf(coordinates, "%c%d", 'A' + j + 1, i + 1);
+                        printf("Bot fires at %s\n", coordinates);
+                        fire(coordinates, opponent->grid);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    if (!success && Cantorpedo(opponent)) {
+        printf("Bot uses torpedo\n");
+        torpedo(bot, opponent->grid, opponent->hits);
+        success = true;
+    }
+
+    if (!success && bot->shipsSunk > 0) {
+        printf("Bot uses artillery\n");
+        int row = rand() % (SIZE - 1);
+        int col = rand() % (SIZE - 1);
+        sprintf(coordinates, "%c%d", 'A' + col, row + 1);
+        artillery(true, opponent->grid);
+        success = true;
+    }
+
+    if (!success) {
+        easydifficultyfire(bot, opponent->grid);
+    }
+}
+
+
