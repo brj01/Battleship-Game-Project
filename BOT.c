@@ -83,7 +83,6 @@ bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVert
     return true;
 }
 
-// Place ship
 void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertical) {
     for (int i = 0; i < size; i++) {
         if (isVertical) grid[row + i][col] = true;
@@ -91,33 +90,51 @@ void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertica
     }
 }
 
-// Check if a ship is sunk
-bool checkShipSunk(Player *opponent, int row, int col, int shipSize) {
-    // Check horizontally
-    for (int i = 0; i < SIZE; i++) {
-        int hitCount = 0;
-        for (int j = 0; j < SIZE; j++) {
-            if (opponent->grid[i][j]) hitCount++;
-            else if (hitCount != 0 && hitCount < shipSize) hitCount = 0;
-            if (hitCount == shipSize) return true;
+
+bool checkShipSunk(bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], int row, int col) {
+
+    if (!grid[row][col]) {
+        return false;
+    }
+
+   
+    int startCol = col, endCol = col;
+    while (startCol > 0 && grid[row][startCol - 1]) {
+        startCol--;
+    }
+    while (endCol < SIZE - 1 && grid[row][endCol + 1]) {
+        endCol++;
+    }
+
+    bool isHorizontalSunk = true;
+    for (int c = startCol; c <= endCol; c++) {
+        if (!hits[row][c]) {
+            isHorizontalSunk = false;
+            break;
         }
     }
 
-    // Check vertically
-    for (int j = 0; j < SIZE; j++) {
-        int hitCount = 0;
-        for (int i = 0; i < SIZE; i++) {
-            if (opponent->grid[i][j]) hitCount++;
-            else if (hitCount != 0 && hitCount < shipSize) hitCount = 0;
-            if (hitCount == shipSize) return true;
+
+    int startRow = row, endRow = row;
+    while (startRow > 0 && grid[startRow - 1][col]) {
+        startRow--;
+    }
+    while (endRow < SIZE - 1 && grid[endRow + 1][col]) {
+        endRow++;
+    }
+
+    bool isVerticalSunk = true;
+    for (int r = startRow; r <= endRow; r++) {
+        if (!hits[r][col]) {
+            isVerticalSunk = false;
+            break;
         }
     }
 
-    // If no ship is completely sunk
-    return false;
+
+    return isHorizontalSunk || isVerticalSunk;
 }
 
-// Artillery: Hits a 3x3 area
 void artillery(Player *opponent, int centerRow, int centerCol) {
     printf("Artillery strike at %c%d:\n", 'A' + centerCol, centerRow + 1);
     for (int i = centerRow - 1; i <= centerRow + 1; i++) {
@@ -131,7 +148,7 @@ void artillery(Player *opponent, int centerRow, int centerCol) {
     printf("Artillery strike completed.\n");
 }
 
-// Torpedo: Targets an entire row or column
+
 void torpedo(Player *opponent, char *direction, int index) {
     printf("Torpedo strike on %s %d:\n", strcmp(direction, "row") == 0 ? "row" : "column", index + 1);
     if (strcmp(direction, "row") == 0) {
