@@ -23,6 +23,17 @@ void initializeGrid(bool grid[SIZE][SIZE]) {
     }
 }
 
+void displayGridHard(bool grid[SIZE][SIZE]) {
+    printf("  A B C D E F G H I J\n");
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d ", i + 1);
+        for (int j = 0; j < SIZE; j++) {
+            printf("%c ", grid[i][j] ? '~' : 'X');
+        }
+        printf("\n");
+    }
+}
+
 void displayGridEasy(bool gridHits[SIZE][SIZE], bool shipsLocation[SIZE][SIZE]) {
     printf("  A B C D E F G H I J\n");
     for (int i = 0; i < SIZE; i++) {
@@ -68,7 +79,6 @@ void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, const char *or
     }
 }
 
-
 bool fire(const char *coordinates, bool grid[SIZE][SIZE]) {
     int col = coordinates[0] - 'A';
     int row = atoi(coordinates + 1) - 1;
@@ -113,8 +123,9 @@ void smoke(Player *player, const char *coordinates) {
         printf("Coordinates out of bounds for smoke screen.\n");
     }
 }
+
 void clearScreen() {
-printf("pretend screen cleared");
+    printf("Pretend the screen is cleared\n");
 }
 
 int main() {
@@ -160,7 +171,7 @@ int main() {
                     placeShip(player->grid, row, col, size, orientation);
                     break;
                 } else {
-                    printf("Invalid position. Try again.\n");
+                    printf("Invalid position or conflicting with another ship. Try again.\n");
                 }
             }
         }
@@ -223,4 +234,3 @@ int main() {
 
     return 0;
 }
-
