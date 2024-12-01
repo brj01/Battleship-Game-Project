@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 #define SIZE 10
 #define MAX_SHIPS 5
@@ -49,11 +50,11 @@ void displayGridEasy(bool gridHits[SIZE][SIZE], bool shipsLocation[SIZE][SIZE]) 
 }
 
 bool parseCoordinates(const char *input, int *row, int *col) {
-    if (strlen(input) < 2 || input[0] < 'A' || input[0] > 'J') {
+    if (strlen(input) < 2 || !isalpha(input[0]) || !isdigit(input[1])) {
         return false; // Invalid format
     }
-    *col = input[0] - 'A'; // Extract column (A-J)
-    *row = atoi(input + 1) - 1; // Extract row (1-10)
+    *col = toupper(input[0]) - 'A'; // Convert to uppercase and extract column (A-J)
+    *row = atoi(input + 1) - 1;     // Extract row (1-10)
 
     if (*row < 0 || *row >= SIZE || *col < 0 || *col >= SIZE) {
         return false; // Out of bounds
@@ -65,19 +66,32 @@ bool validateOrientation(const char *orientation) {
     return strcmp(orientation, "vertical") == 0 || strcmp(orientation, "horizontal") == 0;
 }
 
-bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, const char *orientation) {
+bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, const char *orientation, char *error) {
     if (strcmp(orientation, "vertical") == 0) {
-        if (row + size > SIZE) return false; // Ship goes out of bounds vertically
+        if (row + size > SIZE) {
+            strcpy(error, "Ship goes out of bounds vertically.");
+            return false;
+        }
         for (int i = 0; i < size; i++) {
-            if (grid[row + i][col]) return false; // Conflicts with existing ship
+            if (grid[row + i][col]) {
+                strcpy(error, "Ship overlaps with an existing ship.");
+                return false;
+            }
         }
     } else if (strcmp(orientation, "horizontal") == 0) {
-        if (col + size > SIZE) return false; // Ship goes out of bounds horizontally
+        if (col + size > SIZE) {
+            strcpy(error, "Ship goes out of bounds horizontally.");
+            return false;
+        }
         for (int i = 0; i < size; i++) {
-            if (grid[row][col + i]) return false; // Conflicts with existing ship
+            if (grid[row][col + i]) {
+                strcpy(error, "Ship overlaps with an existing ship.");
+                return false;
+            }
         }
     } else {
-        return false; // Invalid orientation
+        strcpy(error, "Invalid orientation.");
+        return false;
     }
     return true;
 }
@@ -123,6 +137,7 @@ int main() {
         for (int size = 5; size > 1; size--) {
             char orientation[10];
             char coordinate[4];
+            char error[50]; // Buffer to store error messages
             while (true) {
                 displayGridHard(player->grid);
                 printf("Enter coordinate for a %d-cell ship (e.g., B3): ", size);
@@ -142,11 +157,11 @@ int main() {
                     continue;
                 }
 
-                if (canPlaceShip(player->grid, row, col, size, orientation)) {
+                if (canPlaceShip(player->grid, row, col, size, orientation, error)) {
                     placeShip(player->grid, row, col, size, orientation);
                     break;
                 } else {
-                    printf("Invalid position or conflicting with another ship. Try again.\n");
+                    printf("Error: %s\n", error);
                 }
             }
         }
