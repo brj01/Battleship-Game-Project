@@ -121,6 +121,9 @@ void smoke(Player *player, const char *coordinates) {
         printf("Coordinates out of bounds for smoke screen.\n");
     }
 }
+void clearScreen() {
+printf("pretend screen cleared");
+}
 
 int main() {
     Player player1, player2;
