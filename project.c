@@ -6,7 +6,7 @@
 
 #define SIZE 10
 #define MAX_SHIPS 5
-
+//hey
 typedef struct {
     char name[50];
     bool grid[SIZE][SIZE];
