@@ -90,8 +90,7 @@ void addships(bool grid[10][10]) {
 
 // Clears the screen (simulate by printing newlines)
 void clearscreen() {
-    for (int i = 0; i < 30; i++) printf("\n");
-}
+    for (int i = 0; i < 30; i++) printf("\n"); }
 
 int main() {
     bool grid1[10][10] = {false};
