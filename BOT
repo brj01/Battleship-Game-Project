@@ -1,0 +1,148 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+
+#define SIZE 10
+#define MAX_SHIPS 5
+
+typedef struct
+{
+    char name[50];
+    bool grid[SIZE][SIZE];
+    bool hits[SIZE][SIZE];
+    int difficulty;
+    int lastHitRow;
+    int lastHitCol;
+    bool lastHitSuccess;
+} Bot;
+
+void botPlaceShips(Bot *bot)
+{
+    int shipSizes[] = {5, 4, 3, 3, 2};
+    for (int i = 0; i < MAX_SHIPS; i++)
+    {
+        int size = shipSizes[i];
+        while (true)
+        {
+            int row = rand() % SIZE;
+            int col = rand() % SIZE;
+            int orientation = rand() % 2;
+
+            const char *orientation = isHorizontal ? "horizontal" : "vertical";
+
+            if (canPlaceShip(bot->grid, row, col, size, orientation))
+            {
+
+                placeShip(bot->grid, row, col, size, orientation);
+
+                break;//add invalid location
+            }
+        }
+    }
+}
+
+void easydifficultyfire(Bot *bot, grid g) {
+    do {
+        int row = rand() % SIZE;
+        int col = rand() % SIZE;
+    } while (opponent->hits[row][col]); 
+    char coordinates[3];
+    fire(coordinates, opponent->grid); }
+
+void mediumdifficultyfire(Bot *bot,Player* opponent) {
+
+    char coordinates[3];
+    bool success = false;
+`
+    if (bot->radarSweeps > 0) {
+        int row = rand() % SIZE;
+        int col = rand() % SIZE;
+        sprintf(coordinates, "%c%d", 'A' + col, row + 1);
+        radarSweep(bot, coordinates);
+        printf("Bot uses radar at %s\n", coordinates);
+   
+        if (opponent->grid[row][col]) {
+            printf("Ship detected at %s! Focusing fire.\n", coordinates);
+            fire(coordinates, opponent->grid);
+            success = true;
+        }
+    }
+
+
+    if (!success && Cantorpedo(opponent)) {
+        printf("Bot uses torpedo\n");
+        torpedo(bot, opponent->grid, opponent->hits);
+        success = true;
+    }
+
+
+    if (!success) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (opponent->hits[i][j] && opponent->grid[i][j]) {
+                   
+                    if (i > 0 && !opponent->hits[i - 1][j]) { // Up
+                        sprintf(coordinates, "%c%d", 'A' + j, i);
+                        printf("Bot fires at %s\n", coordinates);
+                        fire(coordinates, opponent->grid);
+                        return;
+                    }
+                    if (i < SIZE - 1 && !opponent->hits[i + 1][j]) { // Down
+                        sprintf(coordinates, "%c%d", 'A' + j, i + 2);
+                        printf("Bot fires at %s\n", coordinates);
+                        fire(coordinates, opponent->grid);
+                        return;
+                    }
+                    if (j > 0 && !opponent->hits[i][j - 1]) { // Left
+                        sprintf(coordinates, "%c%d", 'A' + j - 1, i + 1);
+                        printf("Bot fires at %s\n", coordinates);
+                        fire(coordinates, opponent->grid);
+                        return;
+                    }
+                    if (j < SIZE - 1 && !opponent->hits[i][j + 1]) { // Right
+                        sprintf(coordinates, "%c%d", 'A' + j + 1, i + 1);
+                        printf("Bot fires at %s\n", coordinates);
+                        fire(coordinates, opponent->grid);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    if (!success && bot->shipsSunk > 0) {
+        printf("Bot uses artillery\n");
+        int row = rand() % (SIZE - 1);
+        int col = rand() % (SIZE - 1);
+        sprintf(coordinates, "%c%d", 'A' + col, row + 1);
+        artillery(true, opponent->grid);
+        success = true;
+    }
+
+    if (!success) {
+        botEasy(bot, opponent);
+    }
+}
+
+
+bool Cantorpedo(Player* opponent) {
+    for (int i = 0; i < SIZE; i++) {
+        int rowHits = 0;
+        int colHits = 0;
+        for (int j = 0; j < SIZE; j++) {
+            if (opponent->hits[i][j]) rowHits++;
+            if (opponent->hits[j][i]) colHits++;
+        }
+        if (rowHits >= 2 || colHits >= 2) {
+            return true; 
+        
+    
+    return false;
+}
+
+
+}
+
+}
