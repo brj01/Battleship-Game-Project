@@ -22,7 +22,8 @@ void initializeGrid(bool grid[SIZE][SIZE]) {
     }
 }
 
-void displayGridHard(bool grid[SIZE][SIZE]) {
+void displayGrid(bool grid[SIZE][SIZE], const char *label) {
+    printf("\n%s:\n", label);
     printf("  A B C D E F G H I J\n");
     for (int i = 0; i < SIZE; i++) {
         printf("%d ", i + 1);
@@ -33,27 +34,11 @@ void displayGridHard(bool grid[SIZE][SIZE]) {
     }
 }
 
-void displayGridEasy(bool gridHits[SIZE][SIZE], bool shipsLocation[SIZE][SIZE]) {
-    printf("  A B C D E F G H I J\n");
-    for (int i = 0; i < SIZE; i++) {
-        printf("%d ", i + 1);
-        for (int j = 0; j < SIZE; j++) {
-            if (gridHits[i][j])
-                printf("~ ");
-            else if (shipsLocation[i][j])
-                printf("M ");
-            else
-                printf("X ");
-        }
-        printf("\n");
-    }
-}
-
 bool parseCoordinates(const char *input, int *row, int *col) {
     if (strlen(input) < 2 || !isalpha(input[0]) || !isdigit(input[1])) {
         return false; // Invalid format
     }
-    *col = toupper(input[0]) - 'A'; // Convert column letter to uppercase and calculate index
+    *col = toupper(input[0]) - 'A'; // Convert column letter to uppercase
     *row = atoi(input + 1) - 1;     // Extract the numeric row and adjust to zero-based index
 
     if (*row < 0 || *row >= SIZE || *col < 0 || *col >= SIZE) {
@@ -62,12 +47,8 @@ bool parseCoordinates(const char *input, int *row, int *col) {
     return true;
 }
 
-bool validateOrientation(const char *orientation) {
-    return strcmp(orientation, "vertical") == 0 || strcmp(orientation, "horizontal") == 0;
-}
-
-bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, const char *orientation, char *error) {
-    if (strcmp(orientation, "vertical") == 0) {
+bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertical, char *error) {
+    if (isVertical) {
         if (row + size > SIZE) {
             strcpy(error, "Ship goes out of bounds vertically.");
             return false;
@@ -78,7 +59,7 @@ bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, const char 
                 return false;
             }
         }
-    } else if (strcmp(orientation, "horizontal") == 0) {
+    } else {
         if (col + size > SIZE) {
             strcpy(error, "Ship goes out of bounds horizontally.");
             return false;
@@ -89,15 +70,12 @@ bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, const char 
                 return false;
             }
         }
-    } else {
-        strcpy(error, "Invalid orientation.");
-        return false;
     }
     return true;
 }
 
-void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, const char *orientation) {
-    if (strcmp(orientation, "vertical") == 0) {
+void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertical) {
+    if (isVertical) {
         for (int i = 0; i < size; i++) {
             grid[row + i][col] = true;
         }
@@ -112,6 +90,41 @@ void clearScreen() {
     printf("Pretend the screen is cleared\n");
 }
 
+bool fire(const char *coordinates, bool grid[SIZE][SIZE]) {
+    int col = toupper(coordinates[0]) - 'A';
+    int row = atoi(coordinates + 1) - 1;
+
+    if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
+        if (grid[row][col]) {
+            grid[row][col] = false; // Mark as hit
+            return true;
+        }
+    }
+    return false;
+}
+
+void radarSweep(Player *player, const char *coordinates) {
+    int col = toupper(coordinates[0]) - 'A';
+    int row = atoi(coordinates + 1) - 1;
+
+    if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
+        printf("Radar sweep at %s: %s\n", coordinates, player->grid[row][col] ? "Ship detected!" : "No ship detected.");
+    } else {
+        printf("Invalid coordinates for radar sweep.\n");
+    }
+}
+
+void smoke(Player *player, const char *coordinates) {
+    int col = toupper(coordinates[0]) - 'A';
+    int row = atoi(coordinates + 1) - 1;
+
+    if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
+        printf("Smoke screen deployed at %s.\n", coordinates);
+    } else {
+        printf("Invalid coordinates for smoke screen.\n");
+    }
+}
+
 int main() {
     Player player1, player2;
     Player *players[2] = {&player1, &player2};
@@ -119,7 +132,7 @@ int main() {
 
     // Player setup
     printf("Enter name for Player 1: ");
-    scanf("%49s", player1.name); // Limit input length to prevent buffer overflow
+    scanf("%49s", player1.name);
     printf("Enter name for Player 2: ");
     scanf("%49s", player2.name);
 
@@ -135,13 +148,13 @@ int main() {
         Player *player = players[i];
         printf("%s, place your ships:\n", player->name);
         for (int size = 5; size > 1; size--) {
-            char orientation[10];
             char coordinate[4];
+            char orientation[10];
             char error[50]; // Buffer to store error messages
             while (true) {
-                displayGridHard(player->grid);
+                displayGrid(player->grid, "Your Ships");
                 printf("Enter coordinate for a %d-cell ship (e.g., B3): ", size);
-                scanf("%3s", coordinate); // Limit to 3 characters
+                scanf("%3s", coordinate);
 
                 int row, col;
                 if (!parseCoordinates(coordinate, &row, &col)) {
@@ -149,16 +162,13 @@ int main() {
                     continue;
                 }
 
-                printf("Vertical or horizontal? ");
-                scanf("%9s", orientation); // Limit to 9 characters
+                printf("Enter orientation (vertical or anything else for horizontal): ");
+                scanf("%9s", orientation);
 
-                if (!validateOrientation(orientation)) {
-                    printf("Invalid orientation. Use 'vertical' or 'horizontal'.\n");
-                    continue;
-                }
+                bool isVertical = strcmp(orientation, "vertical") == 0;
 
-                if (canPlaceShip(player->grid, row, col, size, orientation, error)) {
-                    placeShip(player->grid, row, col, size, orientation);
+                if (canPlaceShip(player->grid, row, col, size, isVertical, error)) {
+                    placeShip(player->grid, row, col, size, isVertical);
                     break;
                 } else {
                     printf("Error: %s\n", error);
@@ -166,6 +176,53 @@ int main() {
             }
         }
         clearScreen();
+    }
+
+    // Game loop
+    bool gameRunning = true;
+    while (gameRunning) {
+        Player *currentPlayer = players[currentPlayerIndex];
+        Player *opponent = players[1 - currentPlayerIndex];
+
+        displayGrid(opponent->hits, "HITS");
+        printf("%s's turn. Choose an action (Fire, Radar, Smoke): ", currentPlayer->name);
+
+        char command[50];
+        scanf("%s", command);
+
+        if (strcmp(command, "Fire") == 0) {
+            char coordinates[4];
+            printf("Enter coordinates (e.g., B3): ");
+            scanf("%3s", coordinates);
+
+            if (fire(coordinates, opponent->grid)) {
+                int row = coordinates[1] - '1';
+                int col = toupper(coordinates[0]) - 'A';
+                currentPlayer->hits[row][col] = true;
+                printf("Hit!\n");
+                opponent->shipsSunk++;
+                if (opponent->shipsSunk >= MAX_SHIPS) {
+                    printf("%s wins!\n", currentPlayer->name);
+                    gameRunning = false;
+                }
+            } else {
+                printf("Miss.\n");
+            }
+        } else if (strcmp(command, "Radar") == 0) {
+            char coordinates[4];
+            printf("Enter coordinates for radar sweep: ");
+            scanf("%3s", coordinates);
+            radarSweep(currentPlayer, coordinates);
+        } else if (strcmp(command, "Smoke") == 0) {
+            char coordinates[4];
+            printf("Enter coordinates for smoke screen: ");
+            scanf("%3s", coordinates);
+            smoke(currentPlayer, coordinates);
+        } else {
+            printf("Unknown command. Try again.\n");
+        }
+
+        currentPlayerIndex = 1 - currentPlayerIndex; // Switch turns
     }
 
     return 0;
