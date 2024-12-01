@@ -23,17 +23,6 @@ void initializeGrid(bool grid[SIZE][SIZE]) {
     }
 }
 
-void displayGridHard(bool grid[SIZE][SIZE]) {
-    printf("  A B C D E F G H I J\n");
-    for (int i = 0; i < SIZE; i++) {
-        printf("%d ", i + 1);
-        for (int j = 0; j < SIZE; j++) {
-            printf("%c ", grid[i][j] ? '~' : 'X');
-        }
-        printf("\n");
-    }
-}
-
 void displayGridEasy(bool gridHits[SIZE][SIZE], bool shipsLocation[SIZE][SIZE]) {
     printf("  A B C D E F G H I J\n");
     for (int i = 0; i < SIZE; i++) {
@@ -52,15 +41,17 @@ void displayGridEasy(bool gridHits[SIZE][SIZE], bool shipsLocation[SIZE][SIZE]) 
 
 bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, const char *orientation) {
     if (strcmp(orientation, "vertical") == 0) {
-        if (row + size > SIZE) return false;
+        if (row + size > SIZE) return false; // Check if ship fits in the grid
         for (int i = 0; i < size; i++) {
-            if (grid[row + i][col]) return false;
+            if (grid[row + i][col]) return false; // Ensure no conflict with existing ships
         }
     } else if (strcmp(orientation, "horizontal") == 0) {
-        if (col + size > SIZE) return false;
+        if (col + size > SIZE) return false; // Check if ship fits in the grid
         for (int i = 0; i < size; i++) {
-            if (grid[row][col + i]) return false;
+            if (grid[row][col + i]) return false; // Ensure no conflict with existing ships
         }
+    } else {
+        return false; // Invalid orientation
     }
     return true;
 }
@@ -76,6 +67,7 @@ void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, const char *or
         }
     }
 }
+
 
 bool fire(const char *coordinates, bool grid[SIZE][SIZE]) {
     int col = coordinates[0] - 'A';
