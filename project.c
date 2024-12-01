@@ -5,7 +5,7 @@
 #include <ctype.h>
 
 #define SIZE 10
-#define MAX_SHIPS 6 // Adjusted for two ships of size 3
+#define MAX_SHIPS 5
 
 typedef struct {
     char name[50];
@@ -96,18 +96,6 @@ void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertica
     }
 }
 
-// Check if a ship is sunk
-bool isShipSunk(bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], int size, int row, int col, bool isVertical) {
-    for (int i = 0; i < size; i++) {
-        int r = isVertical ? row + i : row;
-        int c = isVertical ? col : col + i;
-        if (!hits[r][c]) {
-            return false; // Not all parts are hit
-        }
-    }
-    return true;
-}
-
 // Gameplay: Fire
 bool fire(const char *coordinates, bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], char *result) {
     int row, col;
@@ -125,28 +113,6 @@ bool fire(const char *coordinates, bool grid[SIZE][SIZE], bool hits[SIZE][SIZE],
         strcpy(result, "Miss.");
         return false;
     }
-}
-
-// Radar Sweep
-void radarSweep(Player *player, const char *coordinates) {
-    int row, col;
-    if (!parseCoordinates(coordinates, &row, &col)) {
-        printf("Invalid coordinates for radar sweep.\n");
-        return;
-    }
-
-    printf("Radar sweep at %s: %s\n", coordinates, player->grid[row][col] ? "Ship detected!" : "No ship detected.");
-}
-
-// Smoke Screen
-void smokeScreen(Player *player, const char *coordinates) {
-    int row, col;
-    if (!parseCoordinates(coordinates, &row, &col)) {
-        printf("Invalid coordinates for smoke screen.\n");
-        return;
-    }
-
-    printf("Smoke screen deployed at %s.\n", coordinates);
 }
 
 // Main Function
@@ -207,7 +173,7 @@ int main() {
         Player *opponent = players[1 - currentPlayerIndex];
 
         displayGrid(opponent->hits, "Opponent's Grid", true);
-        printf("%s's turn. Choose an action (Fire, Radar, Smoke): ", currentPlayer->name);
+        printf("%s's turn. Choose an action (Fire): ", currentPlayer->name);
 
         char command[50];
         scanf("%s", command);
@@ -220,16 +186,6 @@ int main() {
             char result[20];
             fire(coordinates, opponent->grid, opponent->hits, result);
             printf("%s\n", result);
-        } else if (strcmp(command, "Radar") == 0) {
-            char coordinates[4];
-            printf("Enter coordinates for radar sweep: ");
-            scanf("%3s", coordinates);
-            radarSweep(opponent, coordinates);
-        } else if (strcmp(command, "Smoke") == 0) {
-            char coordinates[4];
-            printf("Enter coordinates for smoke screen: ");
-            scanf("%3s", coordinates);
-            smokeScreen(currentPlayer, coordinates);
         } else {
             printf("Unknown command. Try again.\n");
         }
