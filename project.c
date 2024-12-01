@@ -36,7 +36,6 @@ void radarSweep(int counter, bool array[10][10], const char *coordinates) {
     int column = coordinates[0] - 'A'; 
     int row = atoi(coordinates + 1) - 1; 
 
-
     if (row >= 0 && row < 10 && column >= 0 && column < 10) {
         if (array[row][column]) {
             return true;
@@ -115,20 +114,6 @@ void clearScreen() {
     for (int i = 0; i < 30; i++) printf("\n");
 }
 
-void fire(const char *coordinates, bool array[10][10]) {
-    int column = coordinates[0] - 'A'; 
-    int row = atoi(coordinates + 1) - 1; 
-    if (row >= 0 && row < 10 && column >= 0 && column < 10) {
-        if (array[row][column]) {
-            printf("Hit\n");
-            array[row][column] = false; // Mark hit for the opponent
-        } else {
-            printf("Miss\n");
-        }
-    } else {
-        printf("Invalid coordinates\n");
-    }
-}
 
 void radarSweep(Player* currentPlayer, const char *coordinates) {
     int column = coordinates[0] - 'A';
@@ -234,6 +219,7 @@ bool torpedo(bool sankShipLastTurn, bool array [10][10], bool hit [10][10]) {
                 else continue; }
             return false;
         }
+    }
 
 int main() {
     Player player1, player2;
@@ -345,11 +331,6 @@ if (opponent->shipsSunk >= MAX_SHIPS) {
     printf("%s wins!\n", currentPlayer->name);
     gameRunning = false;
 }
-
-
     }
+    return 0; }
 
- 
-
-    return 0;
-}
