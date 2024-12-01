@@ -53,8 +53,8 @@ bool parseCoordinates(const char *input, int *row, int *col) {
     if (strlen(input) < 2 || !isalpha(input[0]) || !isdigit(input[1])) {
         return false; // Invalid format
     }
-    *col = toupper(input[0]) - 'A'; // Convert to uppercase and extract column (A-J)
-    *row = atoi(input + 1) - 1;     // Extract row (1-10)
+    *col = toupper(input[0]) - 'A'; // Convert column letter to uppercase and calculate index
+    *row = atoi(input + 1) - 1;     // Extract the numeric row and adjust to zero-based index
 
     if (*row < 0 || *row >= SIZE || *col < 0 || *col >= SIZE) {
         return false; // Out of bounds
