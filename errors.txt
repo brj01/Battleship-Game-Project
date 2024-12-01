@@ -1,233 +1,46 @@
-S C:\Users\asus\OneDrive\Desktop\CMPS course material\CMPS 270\CMPS270> cd "c:\Users\asus\OneDrive\Desktop\CMPS course material\CMPS 270\CMPS270\" ; if ($?) { gcc project.c -o project } ; if ($?) { .\project }
-Enter name for Player 1: chu
-Enter name for Player 2: soph
-chu, place your ships:
+Enter coordinate for your Submarine (size 2): C4
+Enter orientation (vertical or anything else for horizontal): horizontal
+
+Your Ships:
   A B C D E F G H I J
-1 X X X X X X X X X X 
-2 X X X X X X X X X X 
-3 X X X X X X X X X X 
-4 X X X X X X X X X X 
-5 X X X X X X X X X X 
-6 X X X X X X X X X X 
-7 X X X X X X X X X X 
+1 ~ ~ ~ ~ X X X X X X
+2 ~ ~ ~ ~ X X X X X X
+3 ~ ~ ~ ~ X X X X X X
+4 ~ ~ ~ ~ X X X X X X
+5 ~ X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Enter coordinate for your (null) (size 1920098627): Invalid coordinate. Try again.
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ X X X X X X
+2 ~ ~ ~ ~ X X X X X X
+3 ~ ~ ~ ~ X X X X X X
+4 ~ ~ ~ ~ X X X X X X
+5 ~ X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
 8 X X X X X X X X X X 
-9 X X X X X X X X X X 
-10 X X X X X X X X X X 
-Enter coordinate for a 5-cell ship (e.g., B3): B2
-Parsed row: 1, col: 1
-Vertical or horizontal? vertical
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Enter coordinate for your (null) (size 1920098627): E1
+Enter orientation (vertical or anything else for horizontal): vertical
+Error: Ship goes out of bounds vertically.
+
+Your Ships:
   A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X X X X X X
-6 X ~ X X X X X X X X
+1 ~ ~ ~ ~ X X X X X X
+2 ~ ~ ~ ~ X X X X X X
+3 ~ ~ ~ ~ X X X X X X
+4 ~ ~ ~ ~ X X X X X X
+5 ~ X X X X X X X X X
+6 X X X X X X X X X X
 7 X X X X X X X X X X
 8 X X X X X X X X X X
 9 X X X X X X X X X X
 10 X X X X X X X X X X
-Enter coordinate for a 4-cell ship (e.g., B3): B2
-Parsed row: 1, col: 1
-Vertical or horizontal? horizontal
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X X X X X X
-6 X ~ X X X X X X X X
-7 X X X X X X X X X X
-8 X X X X X X X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 4-cell ship (e.g., B3): Parsed row: -1, col: 43
-Vertical or horizontal? vertical
-Invalid position or conflicting with another ship. Try again.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X X X X X X
-6 X ~ X X X X X X X X
-7 X X X X X X X X X X
-8 X X X X X X X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 4-cell ship (e.g., B3): B4
-Parsed row: 3, col: 1
-Vertical or horizontal? vertical
-Invalid position or conflicting with another ship. Try again.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X X X X X X
-6 X ~ X X X X X X X X
-7 X X X X X X X X X X
-8 X X X X X X X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 4-cell ship (e.g., B3): C4
-Parsed row: 3, col: 2
-Vertical or horizontal? horizontal
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X X X X X X
-6 X ~ X X X X X X X X
-7 X X X X X X X X X X
-8 X X X X X X X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 4-cell ship (e.g., B3): Parsed row: -1, col: 43
-Vertical or horizontal? F5
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X X X X X X
-6 X ~ X X X X X X X X
-7 X X X X X X X X X X
-8 X X X X X X X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 4-cell ship (e.g., B3): vertical
-Parsed row: -1, col: 53
-Vertical or horizontal? Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X X X X X X
-6 X ~ X X X X X X X X
-7 X X X X X X X X X X
-8 X X X X X X X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 4-cell ship (e.g., B3): F5
-Parsed row: 4, col: 5
-Vertical or horizontal? vertical
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X ~ X X X X
-6 X ~ X X X ~ X X X X
-7 X X X X X ~ X X X X
-8 X X X X X ~ X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 3-cell ship (e.g., B3): C4
-Parsed row: 3, col: 2
-Vertical or horizontal? horizontal
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X ~ X X X X
-6 X ~ X X X ~ X X X X
-7 X X X X X ~ X X X X
-8 X X X X X ~ X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 3-cell ship (e.g., B3): Parsed row: -1, col: 43
-Vertical or horizontal? horizontal
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X ~ X X X X
-6 X ~ X X X ~ X X X X
-7 X X X X X ~ X X X X
-8 X X X X X ~ X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 3-cell ship (e.g., B3): Parsed row: -1, col: 43
-Vertical or horizontal? g
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ X X X X X X X X
-5 X ~ X X X ~ X X X X
-6 X ~ X X X ~ X X X X
-7 X X X X X ~ X X X X
-8 X X X X X ~ X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 3-cell ship (e.g., B3): C4
-Parsed row: 3, col: 2
-Vertical or horizontal? vertical
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ ~ X X X X X X X
-5 X ~ ~ X X ~ X X X X
-6 X ~ ~ X X ~ X X X X
-7 X X X X X ~ X X X X
-8 X X X X X ~ X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 2-cell ship (e.g., B3): G1
-Parsed row: 0, col: 6
-Vertical or horizontal? horizontal
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ ~ X X X X X X X
-5 X ~ ~ X X ~ X X X X
-6 X ~ ~ X X ~ X X X X
-7 X X X X X ~ X X X X
-8 X X X X X ~ X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 2-cell ship (e.g., B3): Parsed row: -1, col: 43
-Vertical or horizontal? h
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ ~ X X X X X X X
-5 X ~ ~ X X ~ X X X X
-6 X ~ ~ X X ~ X X X X
-7 X X X X X ~ X X X X
-8 X X X X X ~ X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 2-cell ship (e.g., B3): G1
-Parsed row: 0, col: 6
-Vertical or horizontal? horizontal
-Invalid orientation. Use 'vertical' or 'horizontal'.
-  A B C D E F G H I J
-1 X X X X X X X X X X
-2 X ~ X X X X X X X X
-3 X ~ X X X X X X X X
-4 X ~ ~ X X X X X X X
-5 X ~ ~ X X ~ X X X X
-6 X ~ ~ X X ~ X X X X
-7 X X X X X ~ X X X X
-8 X X X X X ~ X X X X
-9 X X X X X X X X X X
-10 X X X X X X X X X X
-Enter coordinate for a 2-cell ship (e.g., B3): Parsed row: -1, col: 43
-Vertical or horizontal?   
+Enter coordinate for your (null) (size 1920098627):
