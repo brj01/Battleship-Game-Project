@@ -5,15 +5,21 @@
 #include <ctype.h>
 
 #define SIZE 10
-#define MAX_SHIPS 5
-//hey
+#define MAX_SHIPS 6 // Adjusted for two ships of size 3
+
 typedef struct {
     char name[50];
     bool grid[SIZE][SIZE];
     bool hits[SIZE][SIZE];
     int shipsSunk;
+    int smokeScreens; // Tracks available smoke screens
 } Player;
 
+// Ship sizes and names
+const int shipSizes[] = {5, 4, 3, 3, 2};
+const char *shipNames[] = {"Carrier", "Battleship", "Destroyer 1", "Destroyer 2", "Submarine"};
+
+// Grid Initialization
 void initializeGrid(bool grid[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -22,31 +28,34 @@ void initializeGrid(bool grid[SIZE][SIZE]) {
     }
 }
 
-void displayGrid(bool grid[SIZE][SIZE], const char *label) {
+// Display Grid
+void displayGrid(bool grid[SIZE][SIZE], const char *label, bool showMisses) {
     printf("\n%s:\n", label);
     printf("  A B C D E F G H I J\n");
     for (int i = 0; i < SIZE; i++) {
         printf("%d ", i + 1);
         for (int j = 0; j < SIZE; j++) {
-            printf("%c ", grid[i][j] ? '~' : 'X');
+            if (grid[i][j])
+                printf("~ ");
+            else
+                printf("%c ", showMisses ? 'X' : '.');
         }
         printf("\n");
     }
 }
 
+// Parse Coordinates
 bool parseCoordinates(const char *input, int *row, int *col) {
     if (strlen(input) < 2 || !isalpha(input[0]) || !isdigit(input[1])) {
-        return false; // Invalid format
+        return false;
     }
-    *col = toupper(input[0]) - 'A'; // Convert column letter to uppercase
-    *row = atoi(input + 1) - 1;     // Extract the numeric row and adjust to zero-based index
+    *col = toupper(input[0]) - 'A';
+    *row = atoi(input + 1) - 1;
 
-    if (*row < 0 || *row >= SIZE || *col < 0 || *col >= SIZE) {
-        return false; // Out of bounds
-    }
-    return true;
+    return (*row >= 0 && *row < SIZE && *col >= 0 && *col < SIZE);
 }
 
+// Validate Ship Placement
 bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertical, char *error) {
     if (isVertical) {
         if (row + size > SIZE) {
@@ -74,6 +83,7 @@ bool canPlaceShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVert
     return true;
 }
 
+// Place Ship
 void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertical) {
     if (isVertical) {
         for (int i = 0; i < size; i++) {
@@ -86,51 +96,65 @@ void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertica
     }
 }
 
-void clearScreen() {
-    printf("Pretend the screen is cleared\n");
-}
-
-bool fire(const char *coordinates, bool grid[SIZE][SIZE]) {
-    int col = toupper(coordinates[0]) - 'A';
-    int row = atoi(coordinates + 1) - 1;
-
-    if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
-        if (grid[row][col]) {
-            grid[row][col] = false; // Mark as hit
-            return true;
+// Check if a ship is sunk
+bool isShipSunk(bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], int size, int row, int col, bool isVertical) {
+    for (int i = 0; i < size; i++) {
+        int r = isVertical ? row + i : row;
+        int c = isVertical ? col : col + i;
+        if (!hits[r][c]) {
+            return false; // Not all parts are hit
         }
     }
-    return false;
+    return true;
 }
 
+// Gameplay: Fire
+bool fire(const char *coordinates, bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], char *result) {
+    int row, col;
+    if (!parseCoordinates(coordinates, &row, &col)) {
+        strcpy(result, "Invalid coordinates.");
+        return false;
+    }
+
+    if (grid[row][col]) {
+        hits[row][col] = true;
+        strcpy(result, "Hit!");
+        return true;
+    } else {
+        hits[row][col] = true;
+        strcpy(result, "Miss.");
+        return false;
+    }
+}
+
+// Radar Sweep
 void radarSweep(Player *player, const char *coordinates) {
-    int col = toupper(coordinates[0]) - 'A';
-    int row = atoi(coordinates + 1) - 1;
-
-    if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
-        printf("Radar sweep at %s: %s\n", coordinates, player->grid[row][col] ? "Ship detected!" : "No ship detected.");
-    } else {
+    int row, col;
+    if (!parseCoordinates(coordinates, &row, &col)) {
         printf("Invalid coordinates for radar sweep.\n");
+        return;
     }
+
+    printf("Radar sweep at %s: %s\n", coordinates, player->grid[row][col] ? "Ship detected!" : "No ship detected.");
 }
 
-void smoke(Player *player, const char *coordinates) {
-    int col = toupper(coordinates[0]) - 'A';
-    int row = atoi(coordinates + 1) - 1;
-
-    if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
-        printf("Smoke screen deployed at %s.\n", coordinates);
-    } else {
+// Smoke Screen
+void smokeScreen(Player *player, const char *coordinates) {
+    int row, col;
+    if (!parseCoordinates(coordinates, &row, &col)) {
         printf("Invalid coordinates for smoke screen.\n");
+        return;
     }
+
+    printf("Smoke screen deployed at %s.\n", coordinates);
 }
 
+// Main Function
 int main() {
     Player player1, player2;
     Player *players[2] = {&player1, &player2};
     int currentPlayerIndex = 0;
 
-    // Player setup
     printf("Enter name for Player 1: ");
     scanf("%49s", player1.name);
     printf("Enter name for Player 2: ");
@@ -143,17 +167,17 @@ int main() {
 
     player1.shipsSunk = player2.shipsSunk = 0;
 
-    // Game setup: place ships
+    // Game setup: Ship placement
     for (int i = 0; i < 2; i++) {
         Player *player = players[i];
         printf("%s, place your ships:\n", player->name);
-        for (int size = 5; size > 1; size--) {
+        for (int j = 0; j < MAX_SHIPS; j++) {
             char coordinate[4];
             char orientation[10];
-            char error[50]; // Buffer to store error messages
+            char error[50];
             while (true) {
-                displayGrid(player->grid, "Your Ships");
-                printf("Enter coordinate for a %d-cell ship (e.g., B3): ", size);
+                displayGrid(player->grid, "Your Ships", true);
+                printf("Enter coordinate for your %s (size %d): ", shipNames[j], shipSizes[j]);
                 scanf("%3s", coordinate);
 
                 int row, col;
@@ -167,24 +191,22 @@ int main() {
 
                 bool isVertical = strcmp(orientation, "vertical") == 0;
 
-                if (canPlaceShip(player->grid, row, col, size, isVertical, error)) {
-                    placeShip(player->grid, row, col, size, isVertical);
+                if (canPlaceShip(player->grid, row, col, shipSizes[j], isVertical, error)) {
+                    placeShip(player->grid, row, col, shipSizes[j], isVertical);
                     break;
                 } else {
                     printf("Error: %s\n", error);
                 }
             }
         }
-        clearScreen();
     }
 
-    // Game loop
-    bool gameRunning = true;
-    while (gameRunning) {
+    // Gameplay loop
+    while (true) {
         Player *currentPlayer = players[currentPlayerIndex];
         Player *opponent = players[1 - currentPlayerIndex];
 
-        displayGrid(opponent->hits, "HITS");
+        displayGrid(opponent->hits, "Opponent's Grid", true);
         printf("%s's turn. Choose an action (Fire, Radar, Smoke): ", currentPlayer->name);
 
         char command[50];
@@ -195,34 +217,24 @@ int main() {
             printf("Enter coordinates (e.g., B3): ");
             scanf("%3s", coordinates);
 
-            if (fire(coordinates, opponent->grid)) {
-                int row = coordinates[1] - '1';
-                int col = toupper(coordinates[0]) - 'A';
-                currentPlayer->hits[row][col] = true;
-                printf("Hit!\n");
-                opponent->shipsSunk++;
-                if (opponent->shipsSunk >= MAX_SHIPS) {
-                    printf("%s wins!\n", currentPlayer->name);
-                    gameRunning = false;
-                }
-            } else {
-                printf("Miss.\n");
-            }
+            char result[20];
+            fire(coordinates, opponent->grid, opponent->hits, result);
+            printf("%s\n", result);
         } else if (strcmp(command, "Radar") == 0) {
             char coordinates[4];
             printf("Enter coordinates for radar sweep: ");
             scanf("%3s", coordinates);
-            radarSweep(currentPlayer, coordinates);
+            radarSweep(opponent, coordinates);
         } else if (strcmp(command, "Smoke") == 0) {
             char coordinates[4];
             printf("Enter coordinates for smoke screen: ");
             scanf("%3s", coordinates);
-            smoke(currentPlayer, coordinates);
+            smokeScreen(currentPlayer, coordinates);
         } else {
             printf("Unknown command. Try again.\n");
         }
 
-        currentPlayerIndex = 1 - currentPlayerIndex; // Switch turns
+        currentPlayerIndex = 1 - currentPlayerIndex;
     }
 
     return 0;
