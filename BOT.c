@@ -135,8 +135,8 @@ void torpedo(Player *opponent, char *direction, int index) {
 
 void radarSweep(Player *opponent, int centerRow, int centerCol) {
     printf("Radar sweep at %c%d:\n", 'A' + centerCol, centerRow + 1);
-    for (int i = centerRow - 1; i <= centerRow + 1; i++) {
-        for (int j = centerCol - 1; j <= centerCol + 1; j++) {
+    for (int i = centerRow ; i <= centerRow + 1; i++) {
+        for (int j = centerCol ; j <= centerCol + 1; j++) {
             if (i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
                 if (opponent->grid[i][j]) {
                     printf("Ship detected at %c%d\n", 'A' + j, i + 1);
@@ -260,6 +260,17 @@ void hardBotFire(Bot *bot, Player *opponent) {
         fire(opponent, row, col, result);
         printf("Bot fires at %c%d: %s\n", 'A' + col, row + 1, result);
     }
+}
+void placeSmokeScreen(Player *player, int centerRow, int centerCol) {
+    printf("Smoke screen placed at %c%d:\n", 'A' + centerCol, centerRow + 1);
+    for (int i = centerRow ; i <= centerRow + 1; i++) {
+        for (int j = centerCol ; j <= centerCol + 1; j++) {
+            if (i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
+                player->smoke[i][j] = true;
+            }
+        }
+    }
+    printf("Smoke screen deployed.\n");
 }
 
 
