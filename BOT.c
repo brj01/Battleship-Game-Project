@@ -72,26 +72,44 @@ bool parseCoordinates(const char *input, int *row, int *col) {
 bool checkShipSunk(bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], int row, int col) {
     if (!grid[row][col]) return false;
 
+<<<<<<< HEAD
     int startCol = col, endCol = col;
     while (startCol > 0 && grid[row][startCol - 1]) startCol--;
     while (endCol < SIZE - 1 && grid[row][endCol + 1]) endCol++;
+=======
+    if (!grid[row][col]) {
+        return false; }
+   
+    int startCol = col, endCol = col;
+    while (startCol > 0 && grid[row][startCol - 1]) {
+        startCol--; }
+    while (endCol < SIZE - 1 && grid[row][endCol + 1]) {
+        endCol++; }
+
+>>>>>>> 178bb4d8d6d5789c4234eeab5c44843110be7988
     bool isHorizontalSunk = true;
     for (int c = startCol; c <= endCol; c++) {
         if (!hits[row][c]) {
             isHorizontalSunk = false;
-            break;
-        }
+            break; }
     }
 
     int startRow = row, endRow = row;
+<<<<<<< HEAD
     while (startRow > 0 && grid[startRow - 1][col]) startRow--;
     while (endRow < SIZE - 1 && grid[endRow + 1][col]) endRow++;
+=======
+    while (startRow > 0 && grid[startRow - 1][col]) {
+        startRow--; }
+    while (endRow < SIZE - 1 && grid[endRow + 1][col]) {
+        endRow++; }
+
+>>>>>>> 178bb4d8d6d5789c4234eeab5c44843110be7988
     bool isVerticalSunk = true;
     for (int r = startRow; r <= endRow; r++) {
         if (!hits[r][col]) {
             isVerticalSunk = false;
-            break;
-        }
+            break; }
     }
 
     return isHorizontalSunk || isVerticalSunk;
@@ -181,6 +199,7 @@ void easyBotFire(Bot *bot, Player *opponent) {
     printf("Bot fires at %c%d: %s\n", 'A' + col, row + 1, result);
 }
 
+<<<<<<< HEAD
 void mediumBotFire(Bot *bot, Player *opponent) {
     int row, col;
     if (bot->lastHitSuccess) {
@@ -254,12 +273,39 @@ void hardBotFire(Bot *bot, Player *opponent) {
     }
 }
 
+=======
+//for bot to automatically place its ships
+void botPlaceShips(Bot *bot) {
+    for (int i = 0; i < MAX_SHIPS; i++) {
+        bool placed = false;
+        while (!placed) {
+            int row = rand() % SIZE;
+            int col = rand() % SIZE;
+            bool isVertical = rand() % 2;
+
+            if (canPlaceShip(bot->grid, row, col, shipSizes[i], isVertical)) {
+                placeShip(bot->grid, row, col, shipSizes[i], isVertical);
+                placed = true; }
+        }
+    }
+}
+
+
+>>>>>>> 178bb4d8d6d5789c4234eeab5c44843110be7988
 // Main function
 int main() {
     srand(time(NULL));
 
     Player player;
     Bot bot;
+
+    printf("Do you want to display missiles? (Y/N) ");
+    char wantMissiles;
+    bool showMissiles = false;
+    scanf("%49s", wantMissiles);
+
+    if (wantMissiles == 'Y' || wantMissiles == 'y') {
+        showMissiles = true; }
 
     printf("Enter your name: ");
     scanf("%49s", player.name);
@@ -288,7 +334,7 @@ int main() {
         char coordinate[4];
         char orientation[10];
         while (true) {
-            displayGrid(player.grid, "Your Ships", false);
+            displayGrid(player.grid, "Your Ships", showMissiles);
             printf("Enter coordinate for your %s (size %d): ", shipNames[i], shipSizes[i]);
             scanf("%3s", coordinate);
 
@@ -316,6 +362,7 @@ int main() {
 
     int currentPlayerIndex = 0;
 
+<<<<<<< HEAD
     while (player.shipsSunk < MAX_SHIPS && bot.shipsSunk < MAX_SHIPS) {
         if (currentPlayerIndex == 0) { 
             displayGrid(bot.hits, "Opponent's Grid", true);
@@ -342,6 +389,15 @@ int main() {
                             player.radarSweepsRemaining=1;
                         }
                         printf("%s\n", result);
+=======
+            int row, col;
+            char result[20];
+            if (parseCoordinates(coordinates, &row, &col)) {
+                if (fire(&bot, row, col, result)) {
+                    if (checkShipSunk(bot.grid, bot.hits, row, col)) {
+                        bot.shipsSunk++;
+                        printf("You sunk the opponent's ship!\n");
+>>>>>>> 178bb4d8d6d5789c4234eeab5c44843110be7988
                     }
                 } else {
                     printf("Invalid coordinates! Try again.\n");
@@ -416,6 +472,7 @@ int main() {
             } else {
                 printf("Invalid action! Try again.\n");
             }
+<<<<<<< HEAD
         } else {
             switch (bot.difficulty) {
                 case 1:
@@ -437,6 +494,15 @@ int main() {
                bot.smokeScreens++;
 
                 printf("The bot sunk one of your ships!\n");
+=======
+        } else { // Bot's turn
+            botFire(&bot, &player);
+            if (bot.lastHitSuccess) {
+                if (checkShipSunk(player.grid, player.hits, bot.lastHitRow, bot.lastHitCol)) {
+                    player.shipsSunk++;
+                    printf("The bot sunk one of your ships!\n");
+                }
+>>>>>>> 178bb4d8d6d5789c4234eeab5c44843110be7988
             }
         }
 
