@@ -1,3 +1,4 @@
+@ -1,142 +1,142 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -135,129 +136,13 @@ void torpedo(Player *opponent, char *direction, int index) {
 
 void radarSweep(Player *opponent, int centerRow, int centerCol) {
     printf("Radar sweep at %c%d:\n", 'A' + centerCol, centerRow + 1);
+  
     for (int i = centerRow ; i <= centerRow + 1; i++) {
         for (int j = centerCol ; j <= centerCol + 1; j++) {
             if (i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
                 if (opponent->grid[i][j]) {
                     printf("Ship detected at %c%d\n", 'A' + j, i + 1);
-                }
-            }
-        }
-    }
-}
 
-bool fire(Player *opponent, int row, int col, char *result) {
-    if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
-        strcpy(result, "Out of bounds!");
-        return false;
-    }
-    if (opponent->grid[row][col]) {
-        opponent->hits[row][col] = true;
-        opponent->grid[row][col] = false;
-        strcpy(result, "Hit!");
-        return true;
-    } else {
-        opponent->hits[row][col] = true;
-        strcpy(result, "Miss.");
-        return false;
-    }
-}
-
-void botPlaceShips(Bot *bot) {
-    for (int i = 0; i < MAX_SHIPS; i++) {
-        bool placed = false;
-        while (!placed) {
-            int row = rand() % SIZE;
-            int col = rand() % SIZE;
-            bool isVertical = rand() % 2;
-            if (canPlaceShip(bot->grid, row, col, shipSizes[i], isVertical)) {
-                placeShip(bot->grid, row, col, shipSizes[i], isVertical);
-                placed = true;
-            }
-        }
-    }
-}
-void easyBotFire(Bot *bot, Player *opponent) {
-    int row, col;
-    do {
-        row = rand() % SIZE;
-        col = rand() % SIZE;
-    } while (opponent->hits[row][col]);
-    char result[20];
-    fire(opponent, row, col, result);
-    printf("Bot fires at %c%d: %s\n", 'A' + col, row + 1, result);
-}
-
-<<<<<<< HEAD
-void mediumBotFire(Bot *bot, Player *opponent) {
-    int row, col;
-    if (bot->lastHitSuccess) {
-        if (bot->lastHitRow > 0 && !opponent->hits[bot->lastHitRow - 1][bot->lastHitCol]) {
-            row = bot->lastHitRow - 1;
-            col = bot->lastHitCol;
-        } else if (bot->lastHitRow < SIZE - 1 && !opponent->hits[bot->lastHitRow + 1][bot->lastHitCol]) {
-            row = bot->lastHitRow + 1;
-            col = bot->lastHitCol;
-        } else if (bot->lastHitCol > 0 && !opponent->hits[bot->lastHitRow][bot->lastHitCol - 1]) {
-            row = bot->lastHitRow;
-            col = bot->lastHitCol - 1;
-        } else if (bot->lastHitCol < SIZE - 1 && !opponent->hits[bot->lastHitRow][bot->lastHitCol + 1]) {
-            row = bot->lastHitRow;
-            col = bot->lastHitCol + 1;
-        } else {
-            do {
-                row = rand() % SIZE;
-                col = rand() % SIZE;
-            } while (opponent->hits[row][col]);
-        }
-    } else {
-        do {
-            row = rand() % SIZE;
-            col = rand() % SIZE;
-        } while (opponent->hits[row][col]);
-    }
-    char result[20];
-    bot->lastHitSuccess = fire(opponent, row, col, result);
-    bot->lastHitRow = row;
-    bot->lastHitCol = col;
-    printf("Bot fires at %c%d: %s\n", 'A' + col, row + 1, result);
-}
-
-void hardBotFire(Bot *bot, Player *opponent) {
-    int row, col;
-    if (bot->torpedoAvailable) {
-        printf("Bot uses torpedo!\n");
-        int leastHits = SIZE;
-        int targetIndex = 0;
-        char direction[10];
-        for (int i = 0; i < SIZE; i++) {
-            int rowHits = 0, colHits = 0;
-            for (int j = 0; j < SIZE; j++) {
-                if (opponent->hits[i][j]) rowHits++;
-                if (opponent->hits[j][i]) colHits++;
-            }
-            if (rowHits < leastHits) {
-                leastHits = rowHits;
-                targetIndex = i;
-                strcpy(direction, "row");
-            }
-            if (colHits < leastHits) {
-                leastHits = colHits;
-                targetIndex = i;
-                strcpy(direction, "column");
-            }
-        }
-        torpedo(opponent, direction, targetIndex);
-        bot->torpedoAvailable = 0;
-    } else if (bot->lastHitSuccess) {
-        mediumBotFire(bot, opponent);
-    } else {
-        do {
-            row = rand() % SIZE;
-            col = rand() % SIZE;
-        } while (opponent->hits[row][col]);
-        char result[20];
-        fire(opponent, row, col, result);
         printf("Bot fires at %c%d: %s\n", 'A' + col, row + 1, result);
     }
 }
@@ -344,7 +229,7 @@ int main() {
 
     int currentPlayerIndex = 0;
 
-<<<<<<< HEAD
+
     while (player.shipsSunk < MAX_SHIPS && bot.shipsSunk < MAX_SHIPS) {
         if (currentPlayerIndex == 0) { 
             displayGrid(bot.hits, "Opponent's Grid", true);
