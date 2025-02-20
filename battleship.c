@@ -2,32 +2,23 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h>
 #include <ctype.h>
 
 #define SIZE 10
 #define MAX_SHIPS 5
+#define MAX_RADAR_SWEEPS 3
 
 typedef struct {
     char name[50];
     bool grid[SIZE][SIZE];
     bool hits[SIZE][SIZE];
+    bool smoke[SIZE][SIZE];
     int shipsSunk;
     int smokeScreens;
-    int torpedoAvailable;
-    int artilleryAvailable;
+    bool torpedoAvailable;
+    bool artilleryAvailable;
+    int radarSweepsRemaining;
 } Player;
-
-typedef struct {
-    char name[50];
-    bool grid[SIZE][SIZE];
-    bool hits[SIZE][SIZE];
-    int shipsSunk;
-    int difficulty; // 1: Easy, 2: Medium, 3: Hard
-    int lastHitRow;
-    int lastHitCol;
-    bool lastHitSuccess;
-} Bot;
 
 const int shipSizes[] = {5, 4, 3, 3, 2};
 const char *shipNames[] = {"Carrier", "Battleship", "Destroyer 1", "Destroyer 2", "Submarine"};
@@ -91,17 +82,107 @@ void placeShip(bool grid[SIZE][SIZE], int row, int col, int size, bool isVertica
     }
 }
 
-// Random ship placement for bot
-void botPlaceShips(Bot *bot) {
-    for (int i = 0; i < MAX_SHIPS; i++) {
-        int size = shipSizes[i];
-        while (true) {
-            int row = rand() % SIZE;
-            int col = rand() % SIZE;
-            bool isVertical = rand() % 2;
-            if (canPlaceShip(bot->grid, row, col, size, isVertical)) {
-                placeShip(bot->grid, row, col, size, isVertical);
-                break;
+// Check if a ship is sunk
+bool checkShipSunk(bool grid[SIZE][SIZE], bool hits[SIZE][SIZE], int row, int col) {
+    if (!grid[row][col]) {
+        return false;
+    }
+
+    // Check horizontally
+    int startCol = col, endCol = col;
+    while (startCol > 0 && grid[row][startCol - 1]) {
+        startCol--;
+    }
+    while (endCol < SIZE - 1 && grid[row][endCol + 1]) {
+        endCol++;
+    }
+    bool isHorizontalSunk = true;
+    for (int c = startCol; c <= endCol; c++) {
+        if (!hits[row][c]) {
+            isHorizontalSunk = false;
+            break;
+        }
+    }
+
+    // Check vertically
+    int startRow = row, endRow = row;
+    while (startRow > 0 && grid[startRow - 1][col]) {
+        startRow--;
+    }
+    while (endRow < SIZE - 1 && grid[endRow + 1][col]) {
+        endRow++;
+    }
+    bool isVerticalSunk = true;
+    for (int r = startRow; r <= endRow; r++) {
+        if (!hits[r][col]) {
+            isVerticalSunk = false;
+            break;
+        }
+    }
+
+    return isHorizontalSunk || isVerticalSunk;
+}
+
+
+
+void artillery(Player *opponent, int centerRow, int centerCol) {
+    printf("Artillery strike at %c%d:\n", 'A' + centerCol, centerRow + 1);
+    for (int i = centerRow - 1; i <= centerRow + 1; i++) {
+        for (int j = centerCol - 1; j <= centerCol + 1; j++) {
+            if (i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
+                if (opponent->grid[i][j]) {
+                    opponent->hits[i][j] = true;
+                    if (checkShipSunk(opponent->grid, opponent->hits, i, j)) {
+                        opponent->shipsSunk++;
+                        printf("You sunk a ship! Remaining ships: %d\n", MAX_SHIPS - opponent->shipsSunk);
+                    }
+                }
+            }
+        }
+    }
+    printf("Artillery strike completed.\n");
+}
+
+
+
+void torpedo(Player *opponent, char *direction, int index) {
+    printf("Torpedo strike on %s %d:\n", strcmp(direction, "row") == 0 ? "row" : "column", index + 1);
+    if (strcmp(direction, "row") == 0) {
+        for (int col = 0; col < SIZE; col++) {
+            if (opponent->grid[index][col]) {
+                opponent->hits[index][col] = true;
+                if (checkShipSunk(opponent->grid, opponent->hits, index, col)) {
+                    opponent->shipsSunk++;
+                    printf("You sunk a ship! Remaining ships: %d\n", MAX_SHIPS - opponent->shipsSunk);
+                }
+            }
+        }
+    } else if (strcmp(direction, "column") == 0) {
+        for (int row = 0; row < SIZE; row++) {
+            if (opponent->grid[row][index]) {
+                opponent->hits[row][index] = true;
+                if (checkShipSunk(opponent->grid, opponent->hits, row, index)) {
+                    opponent->shipsSunk++;
+                    printf("You sunk a ship! Remaining ships: %d\n", MAX_SHIPS - opponent->shipsSunk);
+                }
+            }
+        }
+    }
+    printf("Torpedo strike completed.\n");
+}
+
+
+// Radar Sweep
+void radarSweep(Player *opponent, int centerRow, int centerCol) {
+    printf("Radar sweep at %c%d:\n", 'A' + centerCol, centerRow + 1);
+    for (int i = centerRow ; i <= centerRow + 1; i++) {
+        for (int j = centerCol ; j <= centerCol + 1; j++) {
+            if (i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
+                if (opponent->smoke[i][j]) {
+                    printf("Area at %c%d is obscured by smoke.\n", 'A' + j, i + 1);
+                } else if (opponent->grid[i][j]) {
+                    printf("Ship detected at %c%d\n", 'A' + j, i + 1);
+                }
             }
         }
     }
@@ -115,8 +196,13 @@ bool fire(Player *opponent, int row, int col, char *result) {
     }
     if (opponent->grid[row][col]) {
         opponent->hits[row][col] = true;
-        opponent->grid[row][col] = false;
         strcpy(result, "Hit!");
+
+     if (checkShipSunk(opponent->grid, opponent->hits, row, col)) {
+            opponent->shipsSunk++; 
+            printf("You sunk a ship! Remaining ships: %d\n", MAX_SHIPS - opponent->shipsSunk);
+        }
+
         return true;
     } else {
         opponent->hits[row][col] = true;
@@ -125,124 +211,187 @@ bool fire(Player *opponent, int row, int col, char *result) {
     }
 }
 
-// Bot fires based on difficulty
-void botFire(Bot *bot, Player *opponent) {
-    int row, col;
-    if (bot->difficulty == 1) { // Easy: Random fire
-        do {
-            row = rand() % SIZE;
-            col = rand() % SIZE;
-        } while (opponent->hits[row][col]);
-    } else if (bot->difficulty == 2 || bot->difficulty == 3) { // Medium/Hard: Target logic
-        if (bot->lastHitSuccess) {
-            // Target adjacent tiles
-            if (bot->lastHitRow > 0 && !opponent->hits[bot->lastHitRow - 1][bot->lastHitCol]) {
-                row = bot->lastHitRow - 1;
-                col = bot->lastHitCol;
-            } else if (bot->lastHitRow < SIZE - 1 && !opponent->hits[bot->lastHitRow + 1][bot->lastHitCol]) {
-                row = bot->lastHitRow + 1;
-                col = bot->lastHitCol;
-            } else if (bot->lastHitCol > 0 && !opponent->hits[bot->lastHitRow][bot->lastHitCol - 1]) {
-                row = bot->lastHitRow;
-                col = bot->lastHitCol - 1;
-            } else if (bot->lastHitCol < SIZE - 1 && !opponent->hits[bot->lastHitRow][bot->lastHitCol + 1]) {
-                row = bot->lastHitRow;
-                col = bot->lastHitCol + 1;
-            } else {
-                row = rand() % SIZE;
-                col = rand() % SIZE;
+
+
+void placeSmokeScreen(Player *player, int centerRow, int centerCol) {
+    printf("Smoke screen placed at %c%d:\n", 'A' + centerCol, centerRow + 1);
+    for (int i = centerRow ; i <= centerRow + 1; i++) {
+        for (int j = centerCol ; j <= centerCol + 1; j++) {
+            if (i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
+                player->smoke[i][j] = true;
             }
-        } else { // Random fire if no successful hit
-            do {
-                row = rand() % SIZE;
-                col = rand() % SIZE;
-            } while (opponent->hits[row][col]);
         }
     }
-
-    char result[20];
-    bot->lastHitSuccess = fire(opponent, row, col, result);
-    bot->lastHitRow = row;
-    bot->lastHitCol = col;
-    printf("Bot fires at %c%d: %s\n", 'A' + col, row + 1, result);
+    printf("Smoke screen deployed.\n");
 }
 
-// Main function
 int main() {
-    srand(time(NULL));
+    printf("Do you want to display missiles? (Y/N) ");
+    char wantMissiles;
+    bool showMissiles = false;
+    scanf("%49s", wantMissiles);
 
-    Player player;
-    Bot bot;
+    if (wantMissiles == 'Y' || wantMissiles == 'y') {
+        showMissiles = true; }
+        while (getchar() != '\n');
+
+    Player player1, player2;
+    Player *players[2] = {&player1, &player2};
     int currentPlayerIndex = 0;
 
-    printf("Enter your name: ");
-    scanf("%49s", player.name);
-    strcpy(bot.name, "AI");
 
-    initializeGrid(player.grid);
-    initializeGrid(player.hits);
-    initializeGrid(bot.grid);
-    initializeGrid(bot.hits);
+    printf("Enter name for Player 1: ");
+    scanf("%49s", player1.name);
 
-    player.shipsSunk = bot.shipsSunk = 0;
-    player.smokeScreens = 3;
-    bot.difficulty = 2; // Change for difficulty selection (1 = Easy, 2 = Medium, 3 = Hard)
+    printf("Enter name for Player 2: ");
+    scanf("%49s", player2.name);
 
-    printf("Place your ships:\n");
-    for (int i = 0; i < MAX_SHIPS; i++) {
-        char coordinate[4];
-        char orientation[10];
-        while (true) {
-            displayGrid(player.grid, "Your Ships", false);
-            printf("Enter coordinate for your %s (size %d): ", shipNames[i], shipSizes[i]);
-            scanf("%3s", coordinate);
+    initializeGrid(player1.grid);
+    initializeGrid(player1.hits);
+    initializeGrid(player1.smoke);
+    initializeGrid(player2.grid);
+    initializeGrid(player2.hits);
+    initializeGrid(player2.smoke);
 
-            int row, col;
-            if (!parseCoordinates(coordinate, &row, &col)) {
-                printf("Invalid coordinates! Try again.\n");
-                continue;
-            }
+    player1.shipsSunk = player2.shipsSunk = 0;
+    player1.smokeScreens = player2.smokeScreens = 0;
+    player1.torpedoAvailable = player2.torpedoAvailable = false;
+    player1.artilleryAvailable = player2.artilleryAvailable = false;
+    player1.radarSweepsRemaining = player2.radarSweepsRemaining = MAX_RADAR_SWEEPS;
 
-            printf("Enter orientation (vertical or horizontal): ");
-            scanf("%9s", orientation);
-            bool isVertical = strcmp(orientation, "vertical") == 0;
+    for (int i = 0; i < 2; i++) {
+        Player *player = players[i];
+        printf("%s, place your ships:\n", player->name);
+        for (int j = 0; j < MAX_SHIPS; j++) {
+            char coordinate[4];
+            char orientation[10];
+            while (true) {
+                displayGrid(player->grid, "Your Ships", showMissiles);
+                printf("Enter coordinate for your %s (size %d): ", shipNames[j], shipSizes[j]);
+                scanf("%3s", coordinate);
 
-            if (canPlaceShip(player.grid, row, col, shipSizes[i], isVertical)) {
-                placeShip(player.grid, row, col, shipSizes[i], isVertical);
-                break;
-            } else {
-                printf("Invalid placement! Try again.\n");
+                int row, col;
+                if (!parseCoordinates(coordinate, &row, &col)) {
+                    printf("Invalid coordinates! Try again.\n");
+                    continue;
+                }
+
+                printf("Enter orientation (vertical or horizontal): ");
+                scanf("%9s", orientation);
+                bool isVertical = strcmp(orientation, "vertical") == 0;
+
+                if (canPlaceShip(player->grid, row, col, shipSizes[j], isVertical)) {
+                    placeShip(player->grid, row, col, shipSizes[j], isVertical);
+                    break;
+                } else {
+                    printf("Invalid placement! Try again.\n");
+                }
             }
         }
     }
 
-    printf("Bot is placing ships...\n");
-    botPlaceShips(&bot);
+    while (player1.shipsSunk < MAX_SHIPS && player2.shipsSunk < MAX_SHIPS) {
+        Player *currentPlayer = players[currentPlayerIndex];
+        Player *opponent = players[1 - currentPlayerIndex];
 
-    // Gameplay loop
-    while (player.shipsSunk < MAX_SHIPS && bot.shipsSunk < MAX_SHIPS) {
-        if (currentPlayerIndex == 0) { // Player's turn
-            displayGrid(bot.hits, "Opponent's Grid", true);
+  
+        displayGrid(opponent->hits, "Opponent's Grid", true);
+        printf("%s's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): ", currentPlayer->name);
+
+        char action[20];
+        scanf("%s", action);
+
+        if (strcmp(action, "Fire") == 0) {
             char coordinates[4];
-            printf("Your turn! Enter coordinates to fire: ");
+            printf("Enter coordinates to fire: ");
             scanf("%3s", coordinates);
 
             int row, col;
             char result[20];
             if (parseCoordinates(coordinates, &row, &col)) {
-                if (fire(&bot, row, col, result)) bot.shipsSunk++;
+                if (fire(opponent, row, col, result)) {
+                    if (checkShipSunk(opponent->grid, opponent->hits, row, col)) {
+                        currentPlayer->shipsSunk++;
+                        currentPlayer->torpedoAvailable = true;
+                        currentPlayer->artilleryAvailable = true;
+                        currentPlayer->smokeScreens++;
+                        printf("You sunk a ship! Torpedo and Artillery are now available.\n");
+                    }
+                }
                 printf("%s\n", result);
             } else {
                 printf("Invalid coordinates! Try again.\n");
             }
-        } else { // Bot's turn
-            botFire(&bot, &player);
-            if (bot.lastHitSuccess) player.shipsSunk++;
+        } else if (strcmp(action, "Artillery") == 0 && currentPlayer->artilleryAvailable) {
+            char coordinates[4];
+            printf("Enter center coordinates for artillery: ");
+            scanf("%3s", coordinates);
+
+            int row, col;
+            if (parseCoordinates(coordinates, &row, &col)) {
+                artillery(opponent, row, col);
+                currentPlayer->artilleryAvailable = false;
+            } else {
+                printf("Invalid coordinates! Try again.\n");
+            }
+        } else if (strcasecmp(action, "Torpedo") == 0 && currentPlayer->torpedoAvailable) {
+    char type[10];
+    printf("Enter target type (row/column): ");
+    scanf("%9s", type);
+
+    int index;
+    printf("Enter target index (1-10): ");
+    scanf("%d", &index);
+    index--;
+
+    if ((strcmp(type, "row") == 0 && index >= 0 && index < SIZE) ||
+        (strcmp(type, "column") == 0 && index >= 0 && index < SIZE)) {
+        torpedo(opponent, type, index);
+        currentPlayer->torpedoAvailable = false;  // Disable after use
+    } else {
+        printf("Invalid target! Try again.\n");
+    }
+} else if (strcasecmp(action, "Torpedo") == 0 && !currentPlayer->torpedoAvailable) {
+    printf("Torpedo is currently unavailable.\n");
+}
+
+        else if (strcmp(action, "Radar") == 0 && currentPlayer->radarSweepsRemaining > 0) {
+            char coordinates[4];
+            printf("Enter center coordinates for radar sweep: ");
+            scanf("%3s", coordinates);
+
+            int row, col;
+            if (parseCoordinates(coordinates, &row, &col)) {
+                radarSweep(opponent, row, col);
+                currentPlayer->radarSweepsRemaining--;
+            } else {
+                printf("Invalid coordinates! Try again.\n");
+            }
+        } 
+        else if(strcmp(action, "Smoke") == 0 && currentPlayer->smokeScreens > 0){
+    char coordinates[4];
+    printf("Enter center coordinates for Smoke: ");
+    scanf("%3s", coordinates);
+
+    int row, col;
+    if (parseCoordinates(coordinates, &row, &col)) {
+        placeSmokeScreen(currentPlayer, row, col);
+        currentPlayer->smokeScreens--;
+        printf("Smoke screen placed. Remaining smoke screens: %d\n", currentPlayer->smokeScreens);
+    } else {
+        printf("Invalid coordinates! Try again.\n");
+    }
+        }
+        
+        
+        else {
+            printf("Invalid action or unavailable resource. Try again.\n");
         }
 
-        currentPlayerIndex = 1 - currentPlayerIndex; // Switch turns
+        currentPlayerIndex = 1 - currentPlayerIndex;
     }
 
-    printf("%s wins!\n", player.shipsSunk == MAX_SHIPS ? bot.name : player.name);
+    printf("%s wins!\n", player1.shipsSunk == MAX_SHIPS ? player2.name : player1.name);
+   
     return 0;
 }

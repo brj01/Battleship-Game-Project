@@ -1,1 +1,1114 @@
+Test cases:
+Player vs. Player:
+
+Do you want to display missiles? (Y/N) y
+Enter name for Player 1: barea
+Enter name for Player 2: joudi
+barea, place your ships:
+
+Your Ships:
+  A B C D E F G H I J
+1 . . . . . . . . . .
+2 . . . . . . . . . .
+3 . . . . . . . . . .
+4 . . . . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Carrier (size 5): A1
+Enter orientation (vertical or horizontal): vertical
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ . . . . . . . . . 
+2 ~ . . . . . . . . . 
+3 ~ . . . . . . . . . 
+4 ~ . . . . . . . . . 
+5 ~ . . . . . . . . . 
+6 . . . . . . . . . . 
+7 . . . . . . . . . . 
+8 . . . . . . . . . . 
+9 . . . . . . . . . . 
+10 . . . . . . . . . . 
+Enter coordinate for your Battleship (size 4): B1
+Enter orientation (vertical or horizontal): vertical
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ . . . . . . . . 
+2 ~ ~ . . . . . . . . 
+3 ~ ~ . . . . . . . .
+4 ~ ~ . . . . . . . .
+5 ~ . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Destroyer 1 (size 3): C1
+Enter orientation (vertical or horizontal): vertical
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ . . . . . . .
+2 ~ ~ ~ . . . . . . .
+3 ~ ~ ~ . . . . . . .
+4 ~ ~ . . . . . . . .
+5 ~ . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Destroyer 2 (size 3): D1
+Enter orientation (vertical or horizontal): vertical
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ . . . . . .
+2 ~ ~ ~ ~ . . . . . .
+3 ~ ~ ~ ~ . . . . . .
+4 ~ ~ . . . . . . . .
+5 ~ . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Submarine (size 2): E1
+Enter orientation (vertical or horizontal): vertical
+joudi, place your ships:
+
+Your Ships:
+  A B C D E F G H I J
+1 . . . . . . . . . .
+2 . . . . . . . . . .
+3 . . . . . . . . . .
+4 . . . . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Carrier (size 5): A1
+Enter orientation (vertical or horizontal): horizontal
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ . . . . .
+2 . . . . . . . . . .
+3 . . . . . . . . . .
+4 . . . . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Battleship (size 4): Invalid coordinates! Try again.
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ . . . . .
+2 . . . . . . . . . .
+3 . . . . . . . . . .
+4 . . . . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Battleship (size 4): A2
+Enter orientation (vertical or horizontal): horizontal
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ . . . . .
+2 ~ ~ ~ ~ . . . . . .
+3 . . . . . . . . . .
+4 . . . . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Destroyer 1 (size 3): Invalid coordinates! Try again.
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ . . . . .
+2 ~ ~ ~ ~ . . . . . .
+3 . . . . . . . . . .
+4 . . . . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Destroyer 1 (size 3): A3
+Enter orientation (vertical or horizontal): horizontal
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ . . . . .
+2 ~ ~ ~ ~ . . . . . .
+3 ~ ~ ~ . . . . . . .
+4 . . . . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Destroyer 2 (size 3): Invalid coordinates! Try again.
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ . . . . .
+2 ~ ~ ~ ~ . . . . . .
+3 ~ ~ ~ . . . . . . .
+4 . . . . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Destroyer 2 (size 3): A4
+Enter orientation (vertical or horizontal): horizontal
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ . . . . .
+2 ~ ~ ~ ~ . . . . . .
+3 ~ ~ ~ . . . . . . .
+4 ~ ~ ~ . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Submarine (size 2): Invalid coordinates! Try again.
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ . . . . .
+2 ~ ~ ~ ~ . . . . . .
+3 ~ ~ ~ . . . . . . .
+4 ~ ~ ~ . . . . . . .
+5 . . . . . . . . . .
+6 . . . . . . . . . .
+7 . . . . . . . . . .
+8 . . . . . . . . . .
+9 . . . . . . . . . .
+10 . . . . . . . . . .
+Enter coordinate for your Submarine (size 2): A5        
+Enter orientation (vertical or horizontal): horizontal
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+barea's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Invalid action or unavailable resource. Try again.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+joudi's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: A1
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+barea's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: A14
+Invalid coordinates! Try again.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+joudi's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: B1
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+barea's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: A1
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ ~ X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+joudi's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: C1
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+barea's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: A2
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ ~ ~ X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+joudi's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: D1
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ X X X X X X X X X
+2 ~ X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+barea's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: A3
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+joudi's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: E1
+You sunk a ship! Remaining ships: 4
+You sunk a ship! Torpedo and Artillery are now available.
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ X X X X X X X X X
+2 ~ X X X X X X X X X
+3 ~ X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+barea's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Fire
+Enter coordinates to fire: A4
+Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+joudi's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Torpedo
+Enter target type (row/column): row
+Enter target index (1-10): 2
+Torpedo strike on row 2:
+You sunk a ship! Remaining ships: 3
+Torpedo strike completed.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ X X X X X X X X X
+2 ~ X X X X X X X X X
+3 ~ X X X X X X X X X
+4 ~ X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+barea's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Smoke
+Invalid action or unavailable resource. Try again.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ X X X X X
+2 ~ ~ ~ ~ ~ X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+joudi's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Smoke
+Enter center coordinates for Smoke: A3
+Smoke screen placed at A3:
+Smoke screen deployed.
+Smoke screen placed. Remaining smoke screens: 0
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ X X X X X X X X X
+2 ~ X X X X X X X X X
+3 ~ X X X X X X X X X
+4 ~ X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+barea's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Radar
+Enter center coordinates for radar sweep: A3
+Radar sweep at A3:
+Area at A3 is obscured by smoke.
+Area at B3 is obscured by smoke.
+Area at A4 is obscured by smoke.
+Area at B4 is obscured by smoke.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ X X X X X
+2 ~ ~ ~ ~ ~ X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+joudi's turn! Choose an action (Fire, Smoke,Artillery, Torpedo, Radar): Artillery
+Enter center coordinates for artillery: C3
+Artillery strike at C3:
+You sunk a ship! Remaining ships: 2
+You sunk a ship! Remaining ships: 1
+You sunk a ship! Remaining ships: 0
+You sunk a ship! Remaining ships: -1
+You sunk a ship! Remaining ships: -2
+You sunk a ship! Remaining ships: -3
+Artillery strike completed.
+barea wins!
+
+Player vs Bot:
+
+PS C:\Users\asus\OneDrive\Desktop\CMPS course material\CMPS 270\CMPS270> cd "c:\Users\asus\OneDrive\Desktop\CMPS course material\CMPS 270\CMPS270\" ; if ($?) { gcc BOT.c -o BOT } ; if ($?) { .\BOT }
+Do you want to display missiles? (Y/N) y
+Enter your name: chu
+Select bot difficulty (1 = Easy, 2 = Medium, 3 = Hard): 1
+Place your ships:
+
+Your Ships:
+  A B C D E F G H I J
+1 X X X X X X X X X X 
+2 X X X X X X X X X X 
+3 X X X X X X X X X X 
+4 X X X X X X X X X X 
+5 X X X X X X X X X X 
+6 X X X X X X X X X X 
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Enter coordinate for your Carrier (size 5): a1
+Enter orientation (vertical or horizontal): a
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Enter coordinate for your Battleship (size 4): a2
+Enter orientation (vertical or horizontal): a
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ X X X X X
+2 ~ ~ ~ ~ X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Enter coordinate for your Destroyer 1 (size 3): a3
+Enter orientation (vertical or horizontal): a
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ X X X X X
+2 ~ ~ ~ ~ X X X X X X
+3 ~ ~ ~ X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Enter coordinate for your Destroyer 2 (size 3): a4
+Enter orientation (vertical or horizontal): a
+
+Your Ships:
+  A B C D E F G H I J
+1 ~ ~ ~ ~ ~ X X X X X
+2 ~ ~ ~ ~ X X X X X X
+3 ~ ~ ~ X X X X X X X
+4 ~ ~ ~ X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Enter coordinate for your Submarine (size 2): a5
+Enter orientation (vertical or horizontal): a
+Bot is placing ships...
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a1
+Miss.
+Bot fires at G4: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a2
+Miss.
+Bot fires at C6: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a3
+Miss.
+Bot fires at G10: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a4
+Miss.
+Bot fires at F9: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X 
+2 X X X X X X X X X X 
+3 X X X X X X X X X X 
+4 X X X X X X X X X X 
+5 X X X X X X X X X X 
+6 X X X X X X X X X X 
+7 X X X X X X X X X X 
+8 X X X X X X X X X X 
+9 X X X X X X X X X X 
+10 X X X X X X X X X X 
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a5
+Miss.
+Bot fires at C3: Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X 
+2 X X X X X X X X X X 
+3 X X X X X X X X X X 
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a6
+Miss.
+Bot fires at J3: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a7
+Miss.
+Bot fires at F7: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a8
+Miss.
+Bot fires at B1: Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a9
+Miss.
+Bot fires at J10: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: a10
+Miss.
+Bot fires at H8: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b1
+Miss.
+Bot fires at I7: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b2
+Miss.
+Bot fires at B9: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b3
+Miss.
+Bot fires at B6: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b4
+Miss.
+Bot fires at D3: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b5
+Miss.
+Bot fires at C7: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b6
+Miss.
+Bot fires at H4: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b7
+Hit!
+Bot fires at A9: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery):
+
+Fire
+Enter coordinates to fire: b8
+Miss.
+Bot fires at B8: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b9
+Miss.
+Bot fires at G2: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: b10
+Miss.
+Bot fires at F2: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c1
+Miss.
+Bot fires at H2: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c2
+Miss.
+Bot fires at E5: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c3
+Miss.
+Bot fires at F10: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c4
+Miss.
+Bot fires at J4: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire 
+Enter coordinates to fire: c5
+Miss.
+Bot fires at H3: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c6
+Miss.
+Bot fires at F3: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c7
+Hit!
+Bot fires at A4: Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c8
+Miss.
+Bot fires at A5: Hit!
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c9
+Miss.
+Bot fires at I1: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire
+Enter coordinates to fire: c10
+Miss.
+Bot fires at I2: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery): Fire 
+Enter coordinates to fire: d1
+Miss.
+Bot fires at F4: Miss.
+
+Opponent's Grid:
+  A B C D E F G H I J
+1 X X X X X X X X X X
+2 X X X X X X X X X X
+3 X X X X X X X X X X
+4 X X X X X X X X X X
+5 X X X X X X X X X X
+6 X X X X X X X X X X
+7 X X X X X X X X X X
+8 X X X X X X X X X X
+9 X X X X X X X X X X
+10 X X X X X X X X X X
+Your turn! Choose action (Fire, Radar, Smoke, Torpedo, Artillery):
 
